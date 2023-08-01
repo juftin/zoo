@@ -2,9 +2,7 @@
 Animal models
 """
 
-from __future__ import annotations
-
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Dict, Optional
 
 from sqlmodel import Field, SQLModel
 
@@ -19,8 +17,8 @@ class AnimalsBase(SQLModel):
     """
 
     name: str = Field(description="The name of the animal")
-    description: str | None = Field(default=None, description="The description of the animal")
-    species: str | None = Field(default=None, description="The species of the animal")
+    description: Optional[str] = Field(default=None, description="The description of the animal")
+    species: Optional[str] = Field(default=None, description="The species of the animal")
 
 
 class AnimalsCreate(AnimalsBase):
@@ -33,7 +31,7 @@ class AnimalsCreate(AnimalsBase):
         Config for AnimalCreate
         """
 
-        schema_extra: ClassVar[dict[str, Any]] = {"examples": [_animal_example]}
+        schema_extra: ClassVar[Dict[str, Any]] = {"examples": [_animal_example]}
 
 
 class Animals(OptionalIdMixin, AnimalsBase, table=True):
@@ -52,4 +50,4 @@ class AnimalsRead(RequiredIdMixin, AnimalsBase):
         Config for AnimalRead
         """
 
-        schema_extra: ClassVar[dict[str, Any]] = {"examples": [{"id": 1, **_animal_example}]}
+        schema_extra: ClassVar[Dict[str, Any]] = {"examples": [{"id": 1, **_animal_example}]}
