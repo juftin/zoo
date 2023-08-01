@@ -2,10 +2,8 @@
 Generic database utility models
 """
 
-from __future__ import annotations
-
 import datetime
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Dict
 
 from sqlmodel import Field, SQLModel
 
@@ -24,7 +22,7 @@ class Health(SQLModel):
         Config for Health
         """
 
-        schema_extra: ClassVar[dict[str, Any]] = {
+        schema_extra: ClassVar[Dict[str, Any]] = {
             "examples": [
                 {
                     "status": "OK",

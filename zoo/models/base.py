@@ -2,7 +2,8 @@
 Base Inheritance Models
 """
 
-from __future__ import annotations
+
+from typing import Optional
 
 from sqlmodel import Field, SQLModel
 
@@ -14,7 +15,7 @@ class OptionalIdMixin(SQLModel):
     This is used for create table models
     """
 
-    id: int | None = Field(  # noqa: A003
+    id: Optional[int] = Field(  # noqa: A003
         default=None, primary_key=True, description="The unique identifier for the table"
     )
 

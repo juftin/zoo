@@ -2,20 +2,19 @@
 zoo app
 """
 
-from __future__ import annotations
-
 from fastapi import FastAPI
 
-from zoo import __version__
+from zoo._version import __application__, __description__, __version__
 from zoo.application.animals import animals_router
 from zoo.application.utils import utils_router
 from zoo.db import init_db
 
 app = FastAPI(
-    title="zoo",
-    description="An asynchronous zoo API, powered by FastAPI and SQLModel",
+    title=__application__,
+    description=__description__,
     version=__version__,
     debug=True,
+    docs_url="/",
 )
 
 
