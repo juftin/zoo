@@ -51,3 +51,20 @@ class AnimalsRead(RequiredIdMixin, AnimalsBase):
         """
 
         schema_extra: ClassVar[Dict[str, Any]] = {"examples": [{"id": 1, **_animal_example}]}
+
+
+class AnimalsUpdate(SQLModel):
+    """
+    Animals model: update
+    """
+
+    name: Optional[str] = Field(default=None, description="The name of the animal")
+    description: Optional[str] = Field(default=None, description="The description of the animal")
+    species: Optional[str] = Field(default=None, description="The species of the animal")
+
+    class Config:
+        """
+        Config for AnimalUpdate
+        """
+
+        schema_extra: ClassVar[Dict[str, Any]] = {"examples": [{"description": "Ferocious kitty with a mane"}]}

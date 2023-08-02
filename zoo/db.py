@@ -6,16 +6,40 @@ import pathlib
 from os import getenv
 from typing import AsyncGenerator
 
+from sqlalchemy import Table
+from sqlalchemy.event import listens_for
 from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.future import Connection
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
+
+from zoo.models.animals import AnimalsCreate, Animals
 
 local_database_file = pathlib.Path(__file__).parent / "zoo.sqlite"
 sqlite_url = f"sqlite+aiosqlite:///{local_database_file}"
 database_url = getenv("DATABASE_URL", sqlite_url)
 
 engine = create_async_engine(database_url, echo=True, future=True)
+
+
+@listens_for(Animals.__table__, "after_create")  # type: ignore[attr-defined]
+def seed_animals_table(target: Table, connection: Connection, **kwargs) -> None:  # noqa: ARG001
+    """
+    Seed the Animals table with initial data
+    """
+    animals = [
+        AnimalsCreate(name="Lion", description="Ferocious kitty with mane", species="Panthera leo"),
+        AnimalsCreate(name="Tiger", description="Ferocious kitty with stripes", species="Panthera tigris"),
+        AnimalsCreate(name="Bear", description="Ferocious doggy kinda thing", species="Ursus arctos"),
+        AnimalsCreate(name="Wolf", description="Ferocious doggy", species="Canis lupus"),
+        AnimalsCreate(name="Cheetah", description="Ferocious fast kitty", species="Acinonyx jubatus"),
+        AnimalsCreate(name="Leopard", description="Ferocious spotted kitty", species="Panthera pardus"),
+        AnimalsCreate(name="Cougar", description="Ferocious mountain kitty", species="Puma concolor"),
+    ]
+    for animal in animals:
+        connection.execute(target.insert(), animal.dict())
+    connection.commit()
 
 
 async def init_db() -> None:
