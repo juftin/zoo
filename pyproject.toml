@@ -18,12 +18,13 @@ classifiers = [
 ]
 dependencies = [
   "fastapi==0.100.1",
+  "sqlmodel==0.0.8",
+  # "pydantic==2.1.1", #  TODO: Upgrade to > 1 when SQLModel supports it
   "aiosqlite==0.19.0",
   "asyncpg==0.28.0",
   "greenlet==2.0.2",
-  "sqlmodel==0.0.8",
-  # "pydantic==2.1.1", #  TODO: Upgrade to > 1 when SQLModel supports it
-  "uvicorn==0.23.2"
+  "uvicorn==0.23.2",
+  "rich==13.5.2"
 ]
 description = "An asynchronous zoo API, powered by FastAPI and SQLModel"
 dynamic = ["version"]
