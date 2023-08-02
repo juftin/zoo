@@ -9,7 +9,13 @@ services:
         ports:
             - 8000:8000
         environment:
-            DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/zoo
+            ZOO_PRODUCTION: true
+            ZOO_DATABASE_DRIVER: postgresql+asyncpg
+            ZOO_DATABASE_HOST: db
+            ZOO_DATABASE_PORT: 5432
+            ZOO_DATABASE_USER: postgres
+            ZOO_DATABASE_PASSWORD: postgres
+            ZOO_DATABASE_NAME: zoo
         depends_on:
             - db
 
@@ -18,6 +24,6 @@ services:
         ports:
             - 5432:5432
         environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            - POSTGRES_DB=zoo
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: zoo

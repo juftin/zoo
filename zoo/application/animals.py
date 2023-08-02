@@ -2,6 +2,7 @@
 Animals Router app
 """
 
+import logging
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -10,6 +11,8 @@ from sqlmodel import select
 
 from zoo.db import get_session
 from zoo.models.animals import Animals, AnimalsCreate, AnimalsRead, AnimalsUpdate
+
+logger = logging.getLogger(__name__)
 
 animals_router = APIRouter(tags=["animals"])
 

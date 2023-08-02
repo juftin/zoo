@@ -2,8 +2,6 @@
 Database Connections
 """
 
-import pathlib
-from os import getenv
 from typing import AsyncGenerator
 
 from sqlalchemy import Table
@@ -14,13 +12,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from zoo.models.animals import AnimalsCreate, Animals
+from zoo.config import ZooSettings
+from zoo.models.animals import Animals, AnimalsCreate
 
-local_database_file = pathlib.Path(__file__).parent / "zoo.sqlite"
-sqlite_url = f"sqlite+aiosqlite:///{local_database_file}"
-database_url = getenv("DATABASE_URL", sqlite_url)
-
-engine = create_async_engine(database_url, echo=True, future=True)
+config = ZooSettings()
+engine = create_async_engine(config.connection_string, echo=True, future=True)
 
 
 @listens_for(Animals.__table__, "after_create")  # type: ignore[attr-defined]
@@ -57,6 +53,6 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
 
     Used by FastAPI Depends
     """
-    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async_session = sessionmaker(engine, class_=AsyncSession, autocommit=False, expire_on_commit=False)
     async with async_session() as session:
         yield session
