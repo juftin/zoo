@@ -2,10 +2,11 @@
 Base Inheritance Models
 """
 
-
+import datetime
 from typing import Optional
 
-from sqlmodel import Field, SQLModel
+from sqlalchemy import Column, DateTime
+from sqlmodel import Field, SQLModel, func
 
 
 class OptionalIdMixin(SQLModel):
@@ -26,3 +27,24 @@ class RequiredIdMixin(SQLModel):
     """
 
     id: int = Field(primary_key=True, description="The unique identifier for the table")  # noqa: A003
+
+
+class CreatedModifiedMixin(SQLModel):
+    """
+    Created and modified mixin
+    """
+
+    created: datetime.datetime = Field(
+        default_factory=datetime.datetime.utcnow,
+        nullable=False,
+        description="The date and time the record was created",
+        sa_column=Column(DateTime(timezone=True), server_default=func.CURRENT_TIMESTAMP()),
+    )
+    modified: datetime.datetime = Field(
+        default_factory=datetime.datetime.utcnow,
+        nullable=False,
+        description="The date and time the record was last modified",
+        sa_column=Column(
+            DateTime(timezone=True), server_default=func.CURRENT_TIMESTAMP(), onupdate=func.CURRENT_TIMESTAMP()
+        ),
+    )
