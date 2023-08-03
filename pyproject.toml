@@ -102,6 +102,19 @@ detached = true
 compile = "pip-compile {args:} --generate-hashes --output-file requirements.txt"
 update = "compile --upgrade"
 
+[tool.hatch.envs.docs]
+dependencies = [
+  "mkdocs~=1.5.2",
+  "mkdocs-material~=9.1.21",
+  "mkdocstrings~=0.22.0",
+]
+detached = true
+
+[tool.hatch.envs.docs.scripts]
+build = ["mkdocs build --clean --strict"]
+deploy = ["mkdocs gh-deploy {args:}"]
+serve = ["mkdocs serve --dev-addr localhost:8080 --livereload"]
+
 [tool.hatch.envs.lint]
 dependencies = [
   "black~=23.7.0",
@@ -183,10 +196,6 @@ select = [
   "YTT"
 ]
 target-version = "py38"
-unfixable = [
-  # Don't touch unused imports
-  "F401"
-]
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "all"

@@ -8,14 +8,15 @@ from sqlalchemy import Table
 from sqlalchemy.future import Connection
 from sqlmodel import Field, SQLModel
 
-from zoo.models.base import CreatedModifiedMixin, OptionalIdMixin, RequiredIdMixin
+from zoo.models.base import CreatedModifiedMixin, DeletedMixin, OptionalIdMixin, RequiredIdMixin
 
 _animal_example = {
     "name": "Lion",
     "description": "Ferocious kitty",
     "species": "Panthera leo",
-    "created": "2021-01-01T00:00:00.000000",
-    "modified": "2021-01-02T09:12:34.567890",
+    "deleted_at": None,
+    "created_at": "2021-01-01T00:00:00.000000",
+    "modified_at": "2021-01-02T09:12:34.567890",
 }
 
 
@@ -42,7 +43,12 @@ class AnimalsCreate(AnimalsBase):
         schema_extra: ClassVar[Dict[str, Any]] = {"examples": [_animal_example]}
 
 
-class AnimalsRead(AnimalsBase, RequiredIdMixin, CreatedModifiedMixin):
+class AnimalsRead(
+    DeletedMixin,
+    CreatedModifiedMixin,
+    AnimalsBase,
+    RequiredIdMixin,
+):
     """
     Animals model: read
     """
@@ -55,7 +61,7 @@ class AnimalsRead(AnimalsBase, RequiredIdMixin, CreatedModifiedMixin):
         schema_extra: ClassVar[Dict[str, Any]] = {"examples": [{"id": 1, **_animal_example}]}
 
 
-class Animals(AnimalsBase, CreatedModifiedMixin, OptionalIdMixin, table=True):
+class Animals(DeletedMixin, CreatedModifiedMixin, AnimalsBase, OptionalIdMixin, table=True):
     """
     Animals model: database table
     """

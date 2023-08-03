@@ -17,6 +17,7 @@ from zoo.models.animals import Animals
 
 config = ZooSettings()
 engine = create_async_engine(config.connection_string, echo=True, future=True)
+async_session = sessionmaker(engine, class_=AsyncSession, autocommit=False, expire_on_commit=False, autoflush=False)
 
 
 @listens_for(Animals.__table__, "after_create")  # type: ignore[attr-defined]
@@ -42,6 +43,8 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
 
     Used by FastAPI Depends
     """
-    async_session = sessionmaker(engine, class_=AsyncSession, autocommit=False, expire_on_commit=False)
-    async with async_session() as session:
-        yield session
+    try:
+        async with async_session() as session:
+            yield session
+    finally:
+        await session.close()
