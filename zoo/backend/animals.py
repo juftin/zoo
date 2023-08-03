@@ -6,6 +6,7 @@ import logging
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -19,12 +20,16 @@ animals_router = APIRouter(tags=["animals"])
 
 @animals_router.get("/animals", response_model=List[AnimalsRead])
 async def get_animals(
-    offset: int = 0, limit: int = Query(default=100, le=100), session: AsyncSession = Depends(get_session)
+    offset: int = 0,
+    limit: int = Query(default=100, le=100),
+    session: AsyncSession = Depends(get_session),
 ) -> List[Animals]:
     """
     Get animals from the database
     """
-    result = await session.execute(select(Animals).offset(offset).limit(limit))
+    result = await session.execute(
+        select(Animals).where(Animals.deleted_at.is_(None)).offset(offset).limit(limit)  # type: ignore[union-attr]
+    )
     animals: List[Animals] = result.scalars().all()
     return animals
 
@@ -47,7 +52,7 @@ async def get_animal(animal_id: int, session: AsyncSession = Depends(get_session
     Get an animal from the database
     """
     animal: Optional[Animals] = await session.get(Animals, animal_id)
-    if animal is None:
+    if animal is None or animal.deleted_at is not None:
         raise HTTPException(status_code=404, detail=f"Error: Animal not found - ID: {animal_id}")
     return animal
 
@@ -58,10 +63,12 @@ async def delete_animal(animal_id: int, session: AsyncSession = Depends(get_sess
     Delete an animal from the database
     """
     animal: Optional[Animals] = await session.get(Animals, animal_id)
-    if animal is None:
+    if animal is None or animal.deleted_at is not None:
         raise HTTPException(status_code=404, detail=f"Error: Animal not found - ID # {animal_id}")
-    await session.delete(animal)
+    animal.deleted_at = func.CURRENT_TIMESTAMP()  # type: ignore[assignment]
+    session.add(animal)
     await session.commit()
+    await session.refresh(animal)
     return animal
 
 
@@ -71,7 +78,7 @@ async def update_animal(animal_id: int, animal: AnimalsUpdate, session: AsyncSes
     Update an animal in the database
     """
     db_animal: Optional[Animals] = await session.get(Animals, animal_id)
-    if db_animal is None:
+    if db_animal is None or db_animal.deleted_at is not None:
         raise HTTPException(status_code=404, detail=f"Error: Animal not found - ID: {animal_id}")
     for field, value in animal.dict(exclude_unset=True).items():
         if value is not None:

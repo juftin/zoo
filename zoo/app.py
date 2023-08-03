@@ -8,8 +8,8 @@ import uvicorn
 from fastapi import FastAPI
 
 from zoo._version import __application__, __description__, __version__
-from zoo.application.animals import animals_router
-from zoo.application.utils import utils_router
+from zoo.backend.animals import animals_router
+from zoo.backend.utils import utils_router
 from zoo.config import config
 from zoo.db import init_db
 
