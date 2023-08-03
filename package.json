@@ -1,0 +1,8 @@
+{
+    "dependencies": {
+        "openapi-typescript-codegen": "^0.25.0"
+    },
+    "scripts": {
+        "generate": "openapi --input ./docs/openapi.json --output ./dist/ts"
+    }
+}
