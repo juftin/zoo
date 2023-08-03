@@ -9,6 +9,7 @@ from typing import Optional
 import fastapi
 import starlette
 import uvicorn
+from fastapi.routing import APIRoute
 from pydantic import BaseSettings
 from rich.logging import RichHandler
 from sqlalchemy.engine import URL
@@ -78,6 +79,13 @@ class ZooSettings(BaseSettings):
                             ],
                         )
                     ]
+
+    @classmethod
+    def custom_generate_unique_id(cls, route: APIRoute):
+        """
+        Custom function to generate unique id for each route
+        """
+        return f"{route.tags[0]}-{route.name}"
 
 
 config = ZooSettings()

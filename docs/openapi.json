@@ -11,7 +11,7 @@
                 "tags": ["utilities"],
                 "summary": "Health Check",
                 "description": "Check the health of the application",
-                "operationId": "health_check_health_get",
+                "operationId": "utilities-health_check",
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -31,7 +31,7 @@
                 "tags": ["animals"],
                 "summary": "Get Animals",
                 "description": "Get animals from the database",
-                "operationId": "get_animals_animals_get",
+                "operationId": "animals-get_animals",
                 "parameters": [
                     {
                         "required": false,
@@ -65,7 +65,7 @@
                                         "$ref": "#/components/schemas/AnimalsRead"
                                     },
                                     "type": "array",
-                                    "title": "Response Get Animals Animals Get"
+                                    "title": "Response Animals-Get Animals"
                                 }
                             }
                         }
@@ -86,7 +86,7 @@
                 "tags": ["animals"],
                 "summary": "Create Animal",
                 "description": "Create a new animal in the database",
-                "operationId": "create_animal_animals_post",
+                "operationId": "animals-create_animal",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -126,7 +126,7 @@
                 "tags": ["animals"],
                 "summary": "Get Animal",
                 "description": "Get an animal from the database",
-                "operationId": "get_animal_animals__animal_id__get",
+                "operationId": "animals-get_animal",
                 "parameters": [
                     {
                         "required": true,
@@ -165,7 +165,7 @@
                 "tags": ["animals"],
                 "summary": "Delete Animal",
                 "description": "Delete an animal from the database",
-                "operationId": "delete_animal_animals__animal_id__delete",
+                "operationId": "animals-delete_animal",
                 "parameters": [
                     {
                         "required": true,
@@ -204,7 +204,7 @@
                 "tags": ["animals"],
                 "summary": "Update Animal",
                 "description": "Update an animal in the database",
-                "operationId": "update_animal_animals__animal_id__patch",
+                "operationId": "animals-update_animal",
                 "parameters": [
                     {
                         "required": true,

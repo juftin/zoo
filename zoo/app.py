@@ -1,7 +1,7 @@
 """
 zoo app
 """
-
+import argparse
 import json
 import pathlib
 
@@ -24,6 +24,7 @@ app = FastAPI(
     version=__version__,
     debug=False,
     docs_url="/",
+    generate_unique_id_function=config.custom_generate_unique_id,
 )
 app_routers = [
     utils_router,
@@ -43,7 +44,12 @@ async def on_startup():
 
 
 if __name__ == "__main__":
-    openapi_body = app.openapi()
-    json_file = pathlib.Path(__file__).parent.parent / "docs" / "openapi.json"
-    json_file.write_text(json.dumps(openapi_body, indent=2))
-    uvicorn.run(app)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--openapi", action="store_true", help="Generate openapi.json", default=False)
+    args = parser.parse_args()
+    if args.openapi is True:
+        openapi_body = app.openapi()
+        json_file = pathlib.Path(__file__).parent.parent / "docs" / "openapi.json"
+        json_file.write_text(json.dumps(openapi_body, indent=2))
+    else:
+        uvicorn.run(app)

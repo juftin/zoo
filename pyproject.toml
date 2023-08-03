@@ -115,6 +115,23 @@ build = ["mkdocs build --clean --strict"]
 deploy = ["mkdocs gh-deploy {args:}"]
 serve = ["mkdocs serve --dev-addr localhost:8080 --livereload"]
 
+[tool.hatch.envs.generate]
+detached = false
+
+[tool.hatch.envs.generate.scripts]
+all = ["openapi", "ts", "py"]
+openapi = "python -m zoo.app --openapi"
+py = [
+  "rm -rf ./dist/clients/python",
+  """
+docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
+  -i /local/docs/openapi.json \
+  -g python \
+  -o /local/dist/clients/python
+"""
+]
+ts = ["rm -rf ./dist/clients/ts", "npx openapi --input ./docs/openapi.json --output ./dist/clients/ts"]
+
 [tool.hatch.envs.lint]
 dependencies = [
   "black~=23.7.0",
