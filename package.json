@@ -1,8 +1,6 @@
 {
     "dependencies": {
+        "@openapitools/openapi-generator-cli": "^2.7.0",
         "openapi-typescript-codegen": "^0.25.0"
-    },
-    "scripts": {
-        "generate": "openapi --input ./docs/openapi.json --output ./dist/ts"
     }
 }
