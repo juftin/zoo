@@ -1,0 +1,446 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "zoo",
+        "description": "An asynchronous zoo API, powered by FastAPI and SQLModel",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/health": {
+            "get": {
+                "tags": ["utilities"],
+                "summary": "Health Check",
+                "description": "Check the health of the application",
+                "operationId": "health_check_health_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Health"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/animals": {
+            "get": {
+                "tags": ["animals"],
+                "summary": "Get Animals",
+                "description": "Get animals from the database",
+                "operationId": "get_animals_animals_get",
+                "parameters": [
+                    {
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Offset",
+                            "default": 0
+                        },
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100.0,
+                            "title": "Limit",
+                            "default": 100
+                        },
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnimalsRead"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Animals Animals Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["animals"],
+                "summary": "Create Animal",
+                "description": "Create a new animal in the database",
+                "operationId": "create_animal_animals_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalsCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/animals/{animal_id}": {
+            "get": {
+                "tags": ["animals"],
+                "summary": "Get Animal",
+                "description": "Get an animal from the database",
+                "operationId": "get_animal_animals__animal_id__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Animal Id"
+                        },
+                        "name": "animal_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["animals"],
+                "summary": "Delete Animal",
+                "description": "Delete an animal from the database",
+                "operationId": "delete_animal_animals__animal_id__delete",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Animal Id"
+                        },
+                        "name": "animal_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["animals"],
+                "summary": "Update Animal",
+                "description": "Update an animal in the database",
+                "operationId": "update_animal_animals__animal_id__patch",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Animal Id"
+                        },
+                        "name": "animal_id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalsUpdate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AnimalsCreate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "The name of the animal"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description",
+                        "description": "The description of the animal"
+                    },
+                    "species": {
+                        "type": "string",
+                        "title": "Species",
+                        "description": "The species of the animal"
+                    }
+                },
+                "type": "object",
+                "required": ["name"],
+                "title": "AnimalsCreate",
+                "description": "Animals model: create",
+                "examples": [
+                    {
+                        "name": "Lion",
+                        "description": "Ferocious kitty",
+                        "species": "Panthera leo",
+                        "created_at": "2021-01-01T00:00:00.000000",
+                        "modified_at": "2021-01-02T09:12:34.567890"
+                    }
+                ]
+            },
+            "AnimalsRead": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id",
+                        "description": "The unique identifier for the table"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "The name of the animal"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description",
+                        "description": "The description of the animal"
+                    },
+                    "species": {
+                        "type": "string",
+                        "title": "Species",
+                        "description": "The species of the animal"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At",
+                        "description": "The date and time the record was created"
+                    },
+                    "modified_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Modified At",
+                        "description": "The date and time the record was last modified"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Deleted At",
+                        "description": "The date and time the record was deleted"
+                    }
+                },
+                "type": "object",
+                "required": ["id", "name"],
+                "title": "AnimalsRead",
+                "description": "Animals model: read",
+                "examples": [
+                    {
+                        "id": 1,
+                        "name": "Lion",
+                        "description": "Ferocious kitty",
+                        "species": "Panthera leo",
+                        "created_at": "2021-01-01T00:00:00.000000",
+                        "modified_at": "2021-01-02T09:12:34.567890"
+                    }
+                ]
+            },
+            "AnimalsUpdate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "The name of the animal"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description",
+                        "description": "The description of the animal"
+                    },
+                    "species": {
+                        "type": "string",
+                        "title": "Species",
+                        "description": "The species of the animal"
+                    }
+                },
+                "type": "object",
+                "title": "AnimalsUpdate",
+                "description": "Animals model: update",
+                "examples": [
+                    {
+                        "description": "Ferocious kitty with a mane"
+                    }
+                ]
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "Health": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "title": "Status",
+                        "description": "The status of the application"
+                    },
+                    "code": {
+                        "type": "integer",
+                        "title": "Code",
+                        "description": "The status code of the response"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Timestamp",
+                        "description": "The timestamp of the response generated by the server"
+                    }
+                },
+                "type": "object",
+                "required": ["status", "code", "timestamp"],
+                "title": "Health",
+                "description": "Health model",
+                "examples": [
+                    {
+                        "status": "OK",
+                        "code": 200,
+                        "timestamp": "2021-05-01T12:00:00.000000+00:00"
+                    }
+                ]
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": ["loc", "msg", "type"],
+                "title": "ValidationError"
+            }
+        }
+    }
+}

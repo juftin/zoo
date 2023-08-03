@@ -106,7 +106,7 @@ update = "compile --upgrade"
 dependencies = [
   "mkdocs~=1.5.2",
   "mkdocs-material~=9.1.21",
-  "mkdocstrings~=0.22.0",
+  "mkdocstrings~=0.22.0"
 ]
 detached = true
 

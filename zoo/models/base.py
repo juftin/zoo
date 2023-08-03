@@ -59,5 +59,5 @@ class DeletedMixin(SQLModel):
         default=None,
         nullable=True,
         description="The date and time the record was deleted",
-        sa_column=Column(DateTime(timezone=True), default=None, nullable=True, sort_order=-1),
+        sa_column=Column(DateTime(timezone=True), default=None, nullable=True),
     )

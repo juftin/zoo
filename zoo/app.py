@@ -2,7 +2,8 @@
 zoo app
 """
 
-import logging
+import json
+import pathlib
 
 import uvicorn
 from fastapi import FastAPI
@@ -24,6 +25,13 @@ app = FastAPI(
     debug=False,
     docs_url="/",
 )
+app_routers = [
+    utils_router,
+    animals_router,
+]
+
+for router in app_routers:
+    app.include_router(router)
 
 
 @app.on_event("startup")
@@ -34,8 +42,8 @@ async def on_startup():
     await init_db()
 
 
-app.include_router(utils_router)
-app.include_router(animals_router)
-
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level=logging.INFO)  # noqa: S104
+    openapi_body = app.openapi()
+    json_file = pathlib.Path(__file__).parent.parent / "docs" / "openapi.json"
+    json_file.write_text(json.dumps(openapi_body, indent=2))
+    uvicorn.run(app)
