@@ -2,9 +2,15 @@
     "openapi": "3.1.0",
     "info": {
         "title": "zoo",
-        "description": "An asynchronous zoo API, powered by FastAPI and SQLModel",
+        "description": "### An asynchronous zoo API, powered by FastAPI and SQLModel\n\n[<img src=\"https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png\" width=\"120\" height=\"120\"  alt=\"juftin logo\">](https://juftin.com)",
         "version": "0.1.0"
     },
+    "servers": [
+        {
+            "url": "http://0.0.0.0:8000/",
+            "description": "Local development server"
+        }
+    ],
     "paths": {
         "/health": {
             "get": {
@@ -249,6 +255,296 @@
                     }
                 }
             }
+        },
+        "/exhibits": {
+            "get": {
+                "tags": ["exhibits"],
+                "summary": "Get Exhibits",
+                "description": "Get exhibits from the database",
+                "operationId": "exhibits-get_exhibits",
+                "parameters": [
+                    {
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Offset",
+                            "default": 0
+                        },
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100.0,
+                            "title": "Limit",
+                            "default": 100
+                        },
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/ExhibitsRead"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Exhibits-Get Exhibits"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["exhibits"],
+                "summary": "Create Exhibit",
+                "description": "Create a new exhibit in the database",
+                "operationId": "exhibits-create_exhibit",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExhibitsCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExhibitsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exhibits/{exhibit_id}": {
+            "get": {
+                "tags": ["exhibits"],
+                "summary": "Get Exhibit",
+                "description": "Get exhibit from the database",
+                "operationId": "exhibits-get_exhibit",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Exhibit Id"
+                        },
+                        "name": "exhibit_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExhibitsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["exhibits"],
+                "summary": "Delete Exhibit",
+                "description": "Delete exhibit from the database",
+                "operationId": "exhibits-delete_exhibit",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Exhibit Id"
+                        },
+                        "name": "exhibit_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExhibitsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["exhibits"],
+                "summary": "Update Exhibit",
+                "description": "Update exhibit from the database",
+                "operationId": "exhibits-update_exhibit",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Exhibit Id"
+                        },
+                        "name": "exhibit_id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExhibitsUpdate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExhibitsRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exhibits/{exhibit_id}/animals": {
+            "get": {
+                "tags": ["exhibits"],
+                "summary": "Get Exhibit Animals",
+                "description": "List animals in an exhibit",
+                "operationId": "exhibits-get_exhibit_animals",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Exhibit Id"
+                        },
+                        "name": "exhibit_id",
+                        "in": "path"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Offset",
+                            "default": 0
+                        },
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100.0,
+                            "title": "Limit",
+                            "default": 100
+                        },
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnimalsRead"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Exhibits-Get Exhibit Animals"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -269,6 +565,11 @@
                         "type": "string",
                         "title": "Species",
                         "description": "The species of the animal"
+                    },
+                    "exhibit_id": {
+                        "type": "integer",
+                        "title": "Exhibit Id",
+                        "description": "The id of the exhibit"
                     }
                 },
                 "type": "object",
@@ -279,9 +580,7 @@
                     {
                         "name": "Lion",
                         "description": "Ferocious kitty",
-                        "species": "Panthera leo",
-                        "created_at": "2021-01-01T00:00:00.000000",
-                        "modified_at": "2021-01-02T09:12:34.567890"
+                        "species": "Panthera leo"
                     }
                 ]
             },
@@ -306,6 +605,11 @@
                         "type": "string",
                         "title": "Species",
                         "description": "The species of the animal"
+                    },
+                    "exhibit_id": {
+                        "type": "integer",
+                        "title": "Exhibit Id",
+                        "description": "The id of the exhibit"
                     },
                     "created_at": {
                         "type": "string",
@@ -332,10 +636,10 @@
                 "description": "Animals model: read",
                 "examples": [
                     {
-                        "id": 1,
                         "name": "Lion",
                         "description": "Ferocious kitty",
                         "species": "Panthera leo",
+                        "id": 1,
                         "created_at": "2021-01-01T00:00:00.000000",
                         "modified_at": "2021-01-02T09:12:34.567890"
                     }
@@ -364,7 +668,123 @@
                 "description": "Animals model: update",
                 "examples": [
                     {
-                        "description": "Ferocious kitty with a mane"
+                        "name": "Lion"
+                    }
+                ]
+            },
+            "ExhibitsCreate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "The name of the exhibit"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description",
+                        "description": "The description of the exhibit"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location",
+                        "description": "The location of the exhibit"
+                    }
+                },
+                "type": "object",
+                "required": ["name"],
+                "title": "ExhibitsCreate",
+                "description": "Exhibits model: create",
+                "examples": [
+                    {
+                        "name": "Big Cat Exhibit",
+                        "description": "A big cat exhibit",
+                        "location": "North America",
+                        "animal_id": 1
+                    }
+                ]
+            },
+            "ExhibitsRead": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id",
+                        "description": "The unique identifier for the table"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "The name of the exhibit"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description",
+                        "description": "The description of the exhibit"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location",
+                        "description": "The location of the exhibit"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At",
+                        "description": "The date and time the record was created"
+                    },
+                    "modified_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Modified At",
+                        "description": "The date and time the record was last modified"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Deleted At",
+                        "description": "The date and time the record was deleted"
+                    }
+                },
+                "type": "object",
+                "required": ["id", "name"],
+                "title": "ExhibitsRead",
+                "description": "Exhibits model: read",
+                "examples": [
+                    {
+                        "name": "Big Cat Exhibit",
+                        "description": "A big cat exhibit",
+                        "location": "North America",
+                        "animal_id": 1,
+                        "id": 1,
+                        "created_at": "2021-01-01T00:00:00.000000",
+                        "modified_at": "2021-01-02T09:12:34.567890"
+                    }
+                ]
+            },
+            "ExhibitsUpdate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name",
+                        "description": "The name of the exhibit"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description",
+                        "description": "The description of the exhibit"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location",
+                        "description": "The location of the exhibit"
+                    }
+                },
+                "type": "object",
+                "title": "ExhibitsUpdate",
+                "description": "Exhibits model: update",
+                "examples": [
+                    {
+                        "name": "Big Cat Exhibit",
+                        "description": "A big cat exhibit"
                     }
                 ]
             },

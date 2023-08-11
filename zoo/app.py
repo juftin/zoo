@@ -1,6 +1,7 @@
 """
 zoo app
 """
+
 import argparse
 import json
 import pathlib
@@ -8,8 +9,9 @@ import pathlib
 import uvicorn
 from fastapi import FastAPI
 
-from zoo._version import __application__, __description__, __version__
+from zoo._version import __application__, __markdown_description__, __version__
 from zoo.backend.animals import animals_router
+from zoo.backend.exhibits import exhibits_router
 from zoo.backend.utils import utils_router
 from zoo.config import config
 from zoo.db import init_db
@@ -20,15 +22,22 @@ if not config.PRODUCTION:
 
 app = FastAPI(
     title=__application__,
-    description=__description__,
+    description=__markdown_description__,
     version=__version__,
     debug=False,
     docs_url="/",
     generate_unique_id_function=config.custom_generate_unique_id,
+    servers=[
+        {
+            "url": "http://0.0.0.0:8000/",
+            "description": "Local development server",
+        }
+    ],
 )
 app_routers = [
     utils_router,
     animals_router,
+    exhibits_router,
 ]
 
 for router in app_routers:
@@ -45,7 +54,9 @@ async def on_startup():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--openapi", action="store_true", help="Generate openapi.json", default=False)
+    parser.add_argument(
+        "--openapi", action="store_true", help="Generate openapi.json", default=False
+    )
     args = parser.parse_args()
     if args.openapi is True:
         openapi_body = app.openapi()

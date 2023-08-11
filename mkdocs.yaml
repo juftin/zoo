@@ -5,6 +5,7 @@ nav:
     - index.md
     - Contributing 🤝: contributing.md
     - Clients 🧑‍💼: clients.md
+    - API Documentation 📡: redocly.md
 theme:
     favicon: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png
     logo: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png
