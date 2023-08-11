@@ -54,7 +54,13 @@ class ZooSettings(BaseSettings):
                 database=self.DATABASE_NAME,
             )
         )
-        if all([self.DATABASE_HOST is None, "sqlite" in self.DATABASE_DRIVER.lower(), "////" not in database_url]):
+        if all(
+            [
+                self.DATABASE_HOST is None,
+                "sqlite" in self.DATABASE_DRIVER.lower(),
+                "////" not in database_url,
+            ]
+        ):
             database_url = str(database_url).replace("///", "////", 1)
         return database_url
 

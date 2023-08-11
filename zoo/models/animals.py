@@ -2,32 +2,43 @@
 Animal models
 """
 
-from typing import Any, ClassVar, Dict, Optional
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, Optional
 
 from sqlalchemy import Table
+from sqlalchemy.event import listens_for
 from sqlalchemy.future import Connection
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field
 
-from zoo.models.base import CreatedModifiedMixin, DeletedMixin, OptionalIdMixin, RequiredIdMixin
+from zoo.models.base import (
+    CreatedModifiedMixin,
+    DeletedMixin,
+    OptionalIdMixin,
+    RequiredIdMixin,
+    ZooModel,
+)
 
-_animal_example = {
-    "name": "Lion",
-    "description": "Ferocious kitty",
-    "species": "Panthera leo",
-    "deleted_at": None,
-    "created_at": "2021-01-01T00:00:00.000000",
-    "modified_at": "2021-01-02T09:12:34.567890",
-}
+if TYPE_CHECKING:
+    pass
 
 
-class AnimalsBase(SQLModel):
+class AnimalsBase(ZooModel):
     """
     Animals model base
     """
 
-    name: str = Field(description="The name of the animal")
+    name: str = Field(description="The name of the animal", index=True)
     description: Optional[str] = Field(default=None, description="The description of the animal")
     species: Optional[str] = Field(default=None, description="The species of the animal")
+
+    exhibit_id: Optional[int] = Field(
+        description="The id of the exhibit", foreign_key="exhibits.id", nullable=True, default=None
+    )
+
+    __example__: ClassVar[Dict[str, Any]] = {
+        "name": "Lion",
+        "description": "Ferocious kitty",
+        "species": "Panthera leo",
+    }
 
 
 class AnimalsCreate(AnimalsBase):
@@ -40,7 +51,7 @@ class AnimalsCreate(AnimalsBase):
         Config for AnimalCreate
         """
 
-        schema_extra: ClassVar[Dict[str, Any]] = {"examples": [_animal_example]}
+        schema_extra: ClassVar[Dict[str, Any]] = AnimalsBase.get_openapi_create_example()
 
 
 class AnimalsRead(
@@ -58,7 +69,7 @@ class AnimalsRead(
         Config for AnimalRead
         """
 
-        schema_extra: ClassVar[Dict[str, Any]] = {"examples": [{"id": 1, **_animal_example}]}
+        schema_extra: ClassVar[Dict[str, Any]] = AnimalsBase.get_openapi_read_example()
 
 
 class Animals(DeletedMixin, CreatedModifiedMixin, AnimalsBase, OptionalIdMixin, table=True):
@@ -66,25 +77,8 @@ class Animals(DeletedMixin, CreatedModifiedMixin, AnimalsBase, OptionalIdMixin, 
     Animals model: database table
     """
 
-    @classmethod
-    def create_seed_data(cls, target: Table, connection: Connection) -> None:
-        """
-        Seed the Animals table with initial data
-        """
-        animals = [
-            AnimalsCreate(name="Lion", description="Ferocious kitty with mane", species="Panthera leo"),
-            AnimalsCreate(name="Tiger", description="Ferocious kitty with stripes", species="Panthera tigris"),
-            AnimalsCreate(name="Bear", description="Ferocious doggy kinda thing", species="Ursus arctos"),
-            AnimalsCreate(name="Wolf", description="Ferocious doggy", species="Canis lupus"),
-            AnimalsCreate(name="Cheetah", description="Ferocious fast kitty", species="Acinonyx jubatus"),
-            AnimalsCreate(name="Leopard", description="Ferocious spotted kitty", species="Panthera pardus"),
-            AnimalsCreate(name="Cougar", description="Ferocious mountain kitty", species="Puma concolor"),
-        ]
-        connection.execute(target.insert(), [animal.dict() for animal in animals])
-        connection.commit()
 
-
-class AnimalsUpdate(SQLModel):
+class AnimalsUpdate(ZooModel):
     """
     Animals model: update
     """
@@ -98,4 +92,44 @@ class AnimalsUpdate(SQLModel):
         Config for AnimalUpdate
         """
 
-        schema_extra: ClassVar[Dict[str, Any]] = {"examples": [{"description": "Ferocious kitty with a mane"}]}
+        schema_extra: ClassVar[Dict[str, Any]] = AnimalsBase.get_openapi_update_example()
+
+
+@listens_for(Animals.__table__, "after_create")  # type: ignore[attr-defined]
+def seed_animals_table(target: Table, connection: Connection, **kwargs) -> None:  # noqa: ARG001
+    """
+    Seed the Animals table with initial data
+    """
+    animals = [
+        AnimalsCreate(
+            name="Lion",
+            description="Ferocious kitty with mane",
+            species="Panthera leo",
+            exhibit_id=1,
+        ),
+        AnimalsCreate(
+            name="Tiger",
+            description="Ferocious kitty with stripes",
+            species="Panthera tigris",
+            exhibit_id=1,
+        ),
+        AnimalsCreate(
+            name="Cheetah",
+            description="Ferocious fast kitty",
+            species="Acinonyx jubatus",
+            exhibit_id=1,
+        ),
+        AnimalsCreate(
+            name="Leopard",
+            description="Ferocious spotted kitty",
+            species="Panthera pardus",
+            exhibit_id=1,
+        ),
+        AnimalsCreate(
+            name="Cougar",
+            description="Ferocious mountain kitty",
+            species="Puma concolor",
+            exhibit_id=1,
+        ),
+    ]
+    connection.execute(target.insert(), [animal.dict() for animal in animals])

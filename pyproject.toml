@@ -44,7 +44,7 @@ Issues = "https://github.com/unknown/zoo/issues"
 Source = "https://github.com/unknown/zoo"
 
 [tool.black]
-line-length = 120
+line-length = 100
 skip-string-normalization = true
 target-version = ["py37"]
 
@@ -70,11 +70,20 @@ source_pkgs = ["zoo", "tests"]
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11"]
 
+[tool.hatch.envs.app]
+detached = false
+
+[tool.hatch.envs.app.scripts]
+reset = ["rm zoo/zoo.sqlite", "serve"]
+serve = "uvicorn zoo.app:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+
 [tool.hatch.envs.default]
 dependencies = [
   "coverage[toml]>=6.5",
   "pytest"
 ]
+path = ".venv"
+type = "virtual"
 
 [tool.hatch.envs.default.scripts]
 cov = [
@@ -111,25 +120,27 @@ dependencies = [
 detached = true
 
 [tool.hatch.envs.docs.scripts]
-build = ["mkdocs build --clean --strict"]
-deploy = ["mkdocs gh-deploy {args:}"]
-serve = ["mkdocs serve --dev-addr localhost:8080 --livereload"]
+build = ["hatch run generate:docs", "mkdocs build --clean --strict"]
+deploy = ["hatch run generate:docs", "mkdocs gh-deploy {args:}"]
+serve = ["hatch run generate:docs", "mkdocs serve --dev-addr localhost:8080 --livereload"]
 
 [tool.hatch.envs.generate]
 detached = false
 
 [tool.hatch.envs.generate.scripts]
-all = ["openapi", "ts", "py"]
+all = ["docs", "ts", "py"]
+docs = ["openapi", "redocly"]
 openapi = "python -m zoo.app --openapi"
 py = [
   "rm -rf ./dist/clients/python",
   """
-docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
-  -i /local/docs/openapi.json \
-  -g python \
-  -o /local/dist/clients/python
-"""
+    docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
+      -i /local/docs/openapi.json \
+      -g python \
+      -o /local/dist/clients/python
+    """
 ]
+redocly = "npx @redocly/cli build-docs docs/openapi.json --output docs/_static/redocly.html"
 ts = ["rm -rf ./dist/clients/ts", "npx openapi --input ./docs/openapi.json --output ./dist/clients/ts"]
 
 [tool.hatch.envs.lint]
