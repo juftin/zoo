@@ -46,7 +46,7 @@ async def create_animal(
     """
     Create a new animal in the database
     """
-    new_animal = Animals(**animal.dict())
+    new_animal = Animals.from_orm(animal)
     session.add(new_animal)
     await session.commit()
     await session.refresh(new_animal)
@@ -87,8 +87,7 @@ async def update_animal(
     db_animal: Optional[Animals] = await session.get(Animals, animal_id)
     db_animal = check_model(model_instance=db_animal, model_class=Animals, id=animal_id)
     for field, value in animal.dict(exclude_unset=True).items():
-        if value is not None:
-            setattr(db_animal, field, value)
+        setattr(db_animal, field, value)
     session.add(db_animal)
     await session.commit()
     await session.refresh(db_animal)

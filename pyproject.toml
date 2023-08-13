@@ -17,14 +17,16 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy"
 ]
 dependencies = [
-  "fastapi==0.100.1",
+  "fastapi~=0.100.1",
   "sqlmodel==0.0.8",
+  "pydantic[email]~=1.10.12",
   # "pydantic==2.1.1", #  TODO: Upgrade to > 1 when SQLModel supports it
-  "aiosqlite==0.19.0",
-  "asyncpg==0.28.0",
-  "greenlet==2.0.2",
-  "uvicorn==0.23.2",
-  "rich==13.5.2"
+  # "pydantic-extra-types~=2.0.0",
+  "aiosqlite~=0.19.0",
+  "asyncpg~=0.28.0",
+  "greenlet~=2.0.2",
+  "uvicorn~=0.23.2",
+  "rich~=13.5.2"
 ]
 description = "An asynchronous zoo API, powered by FastAPI and SQLModel"
 dynamic = ["version"]
@@ -39,9 +41,9 @@ readme = "README.md"
 requires-python = ">=3.8"
 
 [project.urls]
-Documentation = "https://github.com/unknown/zoo#readme"
-Issues = "https://github.com/unknown/zoo/issues"
-Source = "https://github.com/unknown/zoo"
+Documentation = "https://github.com/juftin/zoo#readme"
+Issues = "https://github.com/juftin/zoo/issues"
+Source = "https://github.com/juftin/zoo"
 
 [tool.black]
 line-length = 100
@@ -74,7 +76,9 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 detached = false
 
 [tool.hatch.envs.app.scripts]
-reset = ["rm zoo/zoo.sqlite", "serve"]
+container = "docker compose up --build"
+container-reset = ["docker compose down", "container"]
+reset = ["rm -f zoo/zoo.sqlite", "serve"]
 serve = "uvicorn zoo.app:app --reload --workers 1 --host 0.0.0.0 --port 8000"
 
 [tool.hatch.envs.default]
@@ -83,6 +87,9 @@ dependencies = [
   "pytest"
 ]
 path = ".venv"
+pre-install-commands = [
+  "pre-commit install"
+]
 type = "virtual"
 
 [tool.hatch.envs.default.scripts]
@@ -94,53 +101,49 @@ cov-report = [
   "- coverage combine",
   "coverage report"
 ]
-semantic-release = [
-  "npm install --prefix .github/semantic_release/",
-  "npx --prefix .github/semantic_release/ semantic-release {args:}"
-]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
-
-[tool.hatch.envs.deps]
-dependencies = [
-  "pip-tools~=7.1.0"
-]
-detached = true
-
-[tool.hatch.envs.deps.scripts]
-compile = "pip-compile {args:} --generate-hashes --output-file requirements.txt"
-update = "compile --upgrade"
 
 [tool.hatch.envs.docs]
 dependencies = [
   "mkdocs~=1.5.2",
   "mkdocs-material~=9.1.21",
-  "mkdocstrings~=0.22.0"
+  "mkdocstrings~=0.22.0",
+  "markdown-exec[ansi]~=1.6.0"
 ]
 detached = true
 
 [tool.hatch.envs.docs.scripts]
-build = ["hatch run generate:docs", "mkdocs build --clean --strict"]
-deploy = ["hatch run generate:docs", "mkdocs gh-deploy {args:}"]
-serve = ["hatch run generate:docs", "mkdocs serve --dev-addr localhost:8080 --livereload"]
+build = ["hatch run gen:docs", "mkdocs build --clean --strict"]
+deploy = ["hatch run gen:docs", "mkdocs gh-deploy {args:}"]
+serve = ["hatch run gen:docs", "mkdocs serve --dev-addr localhost:8080 --livereload"]
 
-[tool.hatch.envs.generate]
+[tool.hatch.envs.gen]
+dependencies = [
+  "pip-tools~=7.1.0"
+]
 detached = false
 
-[tool.hatch.envs.generate.scripts]
-all = ["docs", "ts", "py"]
-docs = ["openapi", "redocly"]
+[tool.hatch.envs.gen.scripts]
+all = ["docs"]
+clients = ["py", "ts"]
+docs = ["openapi"]
 openapi = "python -m zoo.app --openapi"
 py = [
   "rm -rf ./dist/clients/python",
   """
-    docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
-      -i /local/docs/openapi.json \
-      -g python \
-      -o /local/dist/clients/python
-    """
+          docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
+            -i /local/docs/openapi.json \
+            -g python \
+            -o /local/dist/clients/python
+          """
 ]
-redocly = "npx @redocly/cli build-docs docs/openapi.json --output docs/_static/redocly.html"
+release = [
+  "npm install --prefix .github/semantic_release/",
+  "npx --prefix .github/semantic_release/ semantic-release {args:}"
+]
+reqs = "pip-compile {args:} --generate-hashes --output-file requirements.txt"
+reqs-update = "compile --upgrade"
 ts = ["rm -rf ./dist/clients/ts", "npx openapi --input ./docs/openapi.json --output ./dist/clients/ts"]
 
 [tool.hatch.envs.lint]
@@ -153,13 +156,16 @@ detached = false
 
 [tool.hatch.envs.lint.scripts]
 all = [
-  "style",
+  "fmt",
   "typing"
 ]
 fmt = [
   "black {args:.}",
   "ruff --fix {args:.}",
   "style"
+]
+precommit = [
+  "pre-commit run --all-files"
 ]
 style = [
   "ruff {args:.}",
@@ -227,6 +233,9 @@ target-version = "py38"
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "all"
+
+[tool.ruff.flake8-unused-arguments]
+ignore-variadic-names = true  # *args, **kwargs
 
 [tool.ruff.isort]
 known-first-party = ["zoo"]

@@ -35,4 +35,5 @@ const animals: AnimalsRead[] = await animalsApi.animalsGetAnimals();
 ```
 
 !!! note
-The TypeScript client is not yet documented :smile:
+
+    The TypeScript client is not yet documented :disappointed:

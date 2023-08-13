@@ -4,8 +4,8 @@ site_name: zoo
 nav:
     - index.md
     - Contributing 🤝: contributing.md
-    - Clients 🧑‍💼: clients.md
-    - API Documentation 📡: redocly.md
+    - API Clients 💻: clients.md
+    - OpenAPI Docs ✨: openapi.md
 theme:
     favicon: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png
     logo: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png
@@ -54,5 +54,11 @@ markdown_extensions:
     - pymdownx.tilde
     - admonition
     - pymdownx.details
+    - pymdownx.emoji:
+          emoji_index: !!python/name:materialx.emoji.twemoji
+          emoji_generator: !!python/name:materialx.emoji.to_svg
+    - pymdownx.tabbed:
+          alternate_style: true
 plugins:
     - search
+    - markdown-exec

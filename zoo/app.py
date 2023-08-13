@@ -12,6 +12,7 @@ from fastapi import FastAPI
 from zoo._version import __application__, __markdown_description__, __version__
 from zoo.backend.animals import animals_router
 from zoo.backend.exhibits import exhibits_router
+from zoo.backend.staff import staff_router
 from zoo.backend.utils import utils_router
 from zoo.config import config
 from zoo.db import init_db
@@ -25,19 +26,15 @@ app = FastAPI(
     description=__markdown_description__,
     version=__version__,
     debug=False,
-    docs_url="/",
+    docs_url=None,  # Custom Swagger UI @ utils_router
+    redoc_url=None,
     generate_unique_id_function=config.custom_generate_unique_id,
-    servers=[
-        {
-            "url": "http://0.0.0.0:8000/",
-            "description": "Local development server",
-        }
-    ],
 )
 app_routers = [
     utils_router,
     animals_router,
     exhibits_router,
+    staff_router,
 ]
 
 for router in app_routers:
