@@ -8,12 +8,14 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
 from zoo.backend.utils import check_model
 from zoo.db import get_session
 from zoo.models.animals import Animals, AnimalsRead
 from zoo.models.exhibits import Exhibits, ExhibitsCreate, ExhibitsRead, ExhibitsUpdate
+from zoo.models.staff import Staff, StaffRead
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +49,7 @@ async def create_exhibit(
     """
     Create a new exhibit in the database
     """
-    new_exhibit = Exhibits(**exhibit.dict())
+    new_exhibit = Exhibits.from_orm(exhibit)
     session.add(new_exhibit)
     await session.commit()
     await session.refresh(new_exhibit)
@@ -105,20 +107,38 @@ async def update_exhibit(
 @exhibits_router.get("/exhibits/{exhibit_id}/animals", response_model=List[AnimalsRead])
 async def get_exhibit_animals(
     exhibit_id: int,
-    offset: int = 0,
-    limit: int = Query(default=100, le=100),
     session: AsyncSession = Depends(get_session),
 ) -> List[Animals]:
     """
     List animals in an exhibit
     """
-    exhibit: Optional[Exhibits] = await session.get(Exhibits, exhibit_id)
-    check_model(model_instance=exhibit, model_class=Exhibits, id=exhibit_id)
-    animals = await session.execute(
-        select(Animals)
-        .where(Animals.exhibit_id == exhibit_id)
-        .order_by(Animals.id)
-        .offset(offset)
-        .limit(limit)
+    exhibit: Optional[Exhibits] = await session.get(
+        entity=Exhibits,
+        ident=exhibit_id,
+        options=[
+            joinedload(Exhibits.animals)  # explicit load of relationship supports async session
+        ],
     )
-    return animals.scalars().all()
+    exhibit = check_model(model_instance=exhibit, model_class=Exhibits, id=exhibit_id)
+    animals: List[Animals] = exhibit.animals
+    return animals
+
+
+@exhibits_router.get("/exhibits/{exhibit_id}/staff", response_model=List[StaffRead])
+async def get_exhibit_staff(
+    exhibit_id: int,
+    session: AsyncSession = Depends(get_session),
+) -> List[Staff]:
+    """
+    List staff in an exhibit
+    """
+    exhibit: Optional[Exhibits] = await session.get(
+        entity=Exhibits,
+        ident=exhibit_id,
+        options=[
+            joinedload(Exhibits.staff),
+        ],
+    )
+    exhibit = check_model(model_instance=exhibit, model_class=Exhibits, id=exhibit_id)
+    staff: List[Staff] = exhibit.staff
+    return staff

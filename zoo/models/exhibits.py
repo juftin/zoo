@@ -2,12 +2,12 @@
 Exhibits models
 """
 
-from typing import TYPE_CHECKING, Any, ClassVar, Dict, Optional
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, List, Optional
 
 from sqlalchemy import Table
 from sqlalchemy.event import listens_for
 from sqlalchemy.future import Connection
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from zoo.models.base import (
     CreatedModifiedMixin,
@@ -18,7 +18,8 @@ from zoo.models.base import (
 )
 
 if TYPE_CHECKING:
-    pass
+    from zoo.models.animals import Animals
+    from zoo.models.staff import Staff
 
 
 class ExhibitsBase(ZooModel):
@@ -26,7 +27,7 @@ class ExhibitsBase(ZooModel):
     Exhibits model base
     """
 
-    name: str = Field(description="The name of the exhibit")
+    name: str = Field(description="The name of the exhibit", index=True, unique=True)
     description: Optional[str] = Field(default=None, description="The description of the exhibit")
     location: Optional[str] = Field(default=None, description="The location of the exhibit")
 
@@ -34,7 +35,6 @@ class ExhibitsBase(ZooModel):
         "name": "Big Cat Exhibit",
         "description": "A big cat exhibit",
         "location": "North America",
-        "animal_id": 1,
     }
 
 
@@ -80,6 +80,9 @@ class Exhibits(
     Exhibits model: table
     """
 
+    animals: List["Animals"] = Relationship(back_populates="exhibit")
+    staff: List["Staff"] = Relationship(back_populates="exhibit")
+
 
 class ExhibitsUpdate(ZooModel):
     """
@@ -99,16 +102,20 @@ class ExhibitsUpdate(ZooModel):
 
 
 @listens_for(Exhibits.__table__, "after_create")  # type: ignore[attr-defined]
-def seed_exhibits_table(target: Table, connection: Connection, **kwargs) -> None:  # noqa: ARG001
+def seed_exhibits_table(target: Table, connection: Connection, **kwargs) -> None:
     """
     Seed the Animals table with initial data
     """
     exhibits = [
-        Exhibits(name="Big Cat Exhibit", description="A big cat exhibit", location="North America"),
-        Exhibits(name="Bird Exhibit", description="A bird exhibit", location="North America"),
-        Exhibits(name="Reptile Exhibit", description="A reptile exhibit", location="North America"),
-        Exhibits(
+        ExhibitsCreate(
+            name="Big Cat Exhibit", description="A big cat exhibit", location="North America"
+        ),
+        ExhibitsCreate(name="Bird Exhibit", description="A bird exhibit", location="North America"),
+        ExhibitsCreate(
+            name="Reptile Exhibit", description="A reptile exhibit", location="North America"
+        ),
+        ExhibitsCreate(
             name="Aquatic Exhibit", description="An aquatic exhibit", location="North America"
         ),
     ]
-    connection.execute(target.insert(), [exhibit.dict() for exhibit in exhibits])
+    connection.execute(target.insert(), [exhibit.dict(exclude_unset=True) for exhibit in exhibits])

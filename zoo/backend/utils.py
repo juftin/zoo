@@ -6,7 +6,10 @@ import datetime
 from typing import Optional, Type
 
 from fastapi import APIRouter, HTTPException
+from fastapi.openapi.docs import get_swagger_ui_html
+from starlette.responses import HTMLResponse
 
+from zoo._version import __application__, __favicon__
 from zoo.models.base import HasDeletedField
 from zoo.models.utils import Health
 
@@ -22,6 +25,18 @@ def health_check() -> Health:
         status="OK",
         code=200,
         timestamp=datetime.datetime.now(tz=datetime.timezone.utc),
+    )
+
+
+@utils_router.get("/docs", include_in_schema=False)
+def swagger_docs() -> HTMLResponse:
+    """
+    Custom Swagger UI HTML
+    """
+    return get_swagger_ui_html(
+        openapi_url="/openapi.json",
+        title=f"{__application__} - Swagger UI",
+        swagger_favicon_url=__favicon__,
     )
 
 
