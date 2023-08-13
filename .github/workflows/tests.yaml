@@ -39,7 +39,7 @@ jobs:
             - name: Install Hatch
               run: |
                   python -m pip install --upgrade pip
-                  python -m pip install -q hatch
+                  python -m pip install -q hatch pre-commit
                   hatch --version
             - name: Test Suite
               run: |
