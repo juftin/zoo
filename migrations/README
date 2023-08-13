@@ -1,0 +1,5 @@
+# Zoo Database Migrations
+
+This `alembic` directory contains the database migrations for the Zoo project.
+This tooling uses the [Alembic](https://alembic.sqlalchemy.org/en/latest/)
+library to manage database migrations.

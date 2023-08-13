@@ -15,10 +15,14 @@ from zoo.backend.exhibits import exhibits_router
 from zoo.backend.staff import staff_router
 from zoo.backend.utils import utils_router
 from zoo.config import config
-from zoo.db import init_db
 
-if not config.PRODUCTION:
-    config.debug_logging()
+if not config.DOCKER:
+    config.rich_logging(
+        loggers=[
+            "uvicorn",
+            "uvicorn.access",
+        ]
+    )
 
 
 app = FastAPI(
@@ -39,14 +43,6 @@ app_routers = [
 
 for router in app_routers:
     app.include_router(router)
-
-
-@app.on_event("startup")
-async def on_startup():
-    """
-    Initialize the database on startup
-    """
-    await init_db()
 
 
 if __name__ == "__main__":

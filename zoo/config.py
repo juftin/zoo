@@ -2,9 +2,10 @@
 Application configuration
 """
 
+import asyncio
 import logging
 import pathlib
-from typing import Optional
+from typing import List, Optional, Union
 
 import fastapi
 import starlette
@@ -14,6 +15,20 @@ from pydantic import BaseSettings
 from rich.logging import RichHandler
 from sqlalchemy.engine import URL
 
+rich_handler = RichHandler(
+    rich_tracebacks=True,
+    tracebacks_show_locals=True,
+    show_time=True,
+    omit_repeated_times=False,
+    tracebacks_suppress=[
+        starlette,
+        fastapi,
+        uvicorn,
+        asyncio,
+    ],
+    log_time_format="[%Y-%m-%d %H:%M:%S]",
+)
+
 
 class ZooSettings(BaseSettings):
     """
@@ -22,6 +37,7 @@ class ZooSettings(BaseSettings):
 
     PRODUCTION: bool = False
     DOCKER: bool = False
+    DEBUG: bool = False
 
     DATABASE_FILE: str = str(pathlib.Path(__file__).resolve().parent / "zoo.sqlite")
     DATABASE_DRIVER: str = "sqlite+aiosqlite"
@@ -65,26 +81,16 @@ class ZooSettings(BaseSettings):
         return database_url
 
     @classmethod
-    def debug_logging(cls) -> None:
+    def rich_logging(cls, loggers: List[Union[str, logging.Logger]]) -> None:
         """
         Configure logging for development
         """
-        for logger in logging.Logger.manager.loggerDict.values():
-            if isinstance(logger, logging.Logger):
-                if logger.handlers:
-                    logger.handlers = [
-                        RichHandler(
-                            rich_tracebacks=True,
-                            tracebacks_show_locals=True,
-                            show_time=True,
-                            omit_repeated_times=False,
-                            tracebacks_suppress=[
-                                starlette,
-                                fastapi,
-                                uvicorn,
-                            ],
-                        )
-                    ]
+        for logger in loggers:
+            if isinstance(logger, str):
+                logger_inst = logging.getLogger(logger)
+            else:
+                logger_inst = logger
+            logger_inst.handlers = [rich_handler]
 
     @classmethod
     def custom_generate_unique_id(cls, route: APIRoute):

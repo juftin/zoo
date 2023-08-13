@@ -26,6 +26,8 @@ dependencies = [
   "asyncpg~=0.28.0",
   "greenlet~=2.0.2",
   "uvicorn~=0.23.2",
+  "gunicorn~=21.2.0",
+  "alembic~=1.11.2",
   "rich~=13.5.2"
 ]
 description = "An asynchronous zoo API, powered by FastAPI and SQLModel"
@@ -47,7 +49,6 @@ Source = "https://github.com/juftin/zoo"
 
 [tool.black]
 line-length = 100
-skip-string-normalization = true
 target-version = ["py37"]
 
 [tool.coverage.paths]
@@ -78,8 +79,12 @@ detached = false
 [tool.hatch.envs.app.scripts]
 container = "docker compose up --build"
 container-reset = ["docker compose down", "container"]
+migrate = "alembic upgrade head"
 reset = ["rm -f zoo/zoo.sqlite", "serve"]
-serve = "uvicorn zoo.app:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+serve = [
+  "migrate",
+  "uvicorn zoo.app:app --reload --host 0.0.0.0 --port 8000"
+]
 
 [tool.hatch.envs.default]
 dependencies = [
@@ -87,8 +92,11 @@ dependencies = [
   "pytest"
 ]
 path = ".venv"
-pre-install-commands = [
+post-install-commands = [
   "pre-commit install"
+]
+pre-install-commands = [
+  "pip install -q -r requirements.txt --no-deps"
 ]
 type = "virtual"
 
@@ -171,7 +179,7 @@ style = [
   "ruff {args:.}",
   "black --check --diff {args:.}"
 ]
-typing = "mypy --install-types --non-interactive {args:zoo tests}"
+typing = "mypy --install-types --non-interactive {args:zoo tests migrations}"
 
 [tool.hatch.version]
 path = "zoo/_version.py"
@@ -243,3 +251,6 @@ known-first-party = ["zoo"]
 [tool.ruff.per-file-ignores]
 # Tests can use magic values, assertions, and relative imports
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
+
+[tool.ruff.pydocstyle]
+convention = "numpy"

@@ -3,19 +3,29 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        command: uvicorn zoo.app:app --reload --workers 1 --host 0.0.0.0 --port 8000
+        command: |
+            bash -c "alembic upgrade head &&
+            gunicorn zoo.app:app"
         volumes:
             - ./:/home/zoo
         ports:
             - 8000:8000
         environment:
             ZOO_PRODUCTION: true
+            ZOO_DOCKER: true
             ZOO_DATABASE_DRIVER: postgresql+asyncpg
             ZOO_DATABASE_HOST: db
             ZOO_DATABASE_PORT: 5432
             ZOO_DATABASE_USER: postgres
             ZOO_DATABASE_PASSWORD: postgres
             ZOO_DATABASE_NAME: zoo
+            GUNICORN_CMD_ARGS: >
+                --workers 4
+                --worker-class uvicorn.workers.UvicornWorker
+                --bind 0.0.0.0:8000
+                --preload
+                --log-level=info
+                --access-logfile "-"
         depends_on:
             - db
 

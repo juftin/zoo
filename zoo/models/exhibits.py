@@ -4,9 +4,6 @@ Exhibits models
 
 from typing import TYPE_CHECKING, Any, ClassVar, Dict, List, Optional
 
-from sqlalchemy import Table
-from sqlalchemy.event import listens_for
-from sqlalchemy.future import Connection
 from sqlmodel import Field, Relationship
 
 from zoo.models.base import (
@@ -99,23 +96,3 @@ class ExhibitsUpdate(ZooModel):
         """
 
         schema_extra: ClassVar[Dict[str, Any]] = ExhibitsBase.get_openapi_update_example()
-
-
-@listens_for(Exhibits.__table__, "after_create")  # type: ignore[attr-defined]
-def seed_exhibits_table(target: Table, connection: Connection, **kwargs) -> None:
-    """
-    Seed the Animals table with initial data
-    """
-    exhibits = [
-        ExhibitsCreate(
-            name="Big Cat Exhibit", description="A big cat exhibit", location="North America"
-        ),
-        ExhibitsCreate(name="Bird Exhibit", description="A bird exhibit", location="North America"),
-        ExhibitsCreate(
-            name="Reptile Exhibit", description="A reptile exhibit", location="North America"
-        ),
-        ExhibitsCreate(
-            name="Aquatic Exhibit", description="An aquatic exhibit", location="North America"
-        ),
-    ]
-    connection.execute(target.insert(), [exhibit.dict(exclude_unset=True) for exhibit in exhibits])
