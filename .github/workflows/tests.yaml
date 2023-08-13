@@ -27,6 +27,8 @@ jobs:
                     - { name: Python 3.10, python: "3.10" }
                     - { name: Python 3.9, python: "3.9" }
                     - { name: Python 3.8, python: "3.8" }
+        env:
+            ZOO_DOCKER: true
         steps:
             - name: Set up Github Workspace
               uses: actions/checkout@v3
@@ -41,6 +43,9 @@ jobs:
                   python -m pip install --upgrade pip
                   python -m pip install -q hatch pre-commit
                   hatch --version
+            - name: Run Database Migrations
+              run: |
+                  hatch run app:migrate
             - name: Test Suite
               run: |
                   echo "::add-matcher::.github/workflows/matchers/python.json"
