@@ -28,6 +28,7 @@ dependencies = [
   "uvicorn~=0.23.2",
   "gunicorn~=21.2.0",
   "alembic~=1.11.2",
+  "httpx~=0.24.1",
   "rich~=13.5.2"
 ]
 description = "An asynchronous zoo API, powered by FastAPI and SQLModel"
@@ -68,7 +69,7 @@ omit = [
   "zoo/__init__.py"
 ]
 parallel = true
-source_pkgs = ["zoo", "tests"]
+source_pkgs = ["zoo"]
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11"]

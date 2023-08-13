@@ -1,5 +1,5 @@
 """
-Zoo tests
+Animal Tests
 """
 
 import pytest
