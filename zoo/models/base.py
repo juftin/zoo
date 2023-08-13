@@ -5,7 +5,7 @@ Base Inheritance Models
 import datetime
 from typing import Any, ClassVar, Dict, Optional, TypeVar
 
-from sqlalchemy import Column, DateTime
+from sqlalchemy import Column, DateTime, Table
 from sqlmodel import Field, SQLModel, func
 
 
@@ -13,6 +13,8 @@ class ZooModel(SQLModel):
     """
     Base model for all zoo models
     """
+
+    __table__: Table
 
     __example__: ClassVar[Dict[str, Any]] = {}
 

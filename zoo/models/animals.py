@@ -4,9 +4,6 @@ Animal models
 
 from typing import TYPE_CHECKING, Any, ClassVar, Dict, Optional
 
-from sqlalchemy import Table
-from sqlalchemy.event import listens_for
-from sqlalchemy.future import Connection
 from sqlmodel import Field, Relationship
 
 from zoo.models.base import (
@@ -101,43 +98,3 @@ class AnimalsUpdate(ZooModel):
         """
 
         schema_extra: ClassVar[Dict[str, Any]] = AnimalsBase.get_openapi_update_example()
-
-
-@listens_for(Animals.__table__, "after_create")  # type: ignore[attr-defined]
-def seed_animals_table(target: Table, connection: Connection, **kwargs) -> None:
-    """
-    Seed the Animals table with initial data
-    """
-    animals = [
-        AnimalsCreate(
-            name="Lion",
-            description="Ferocious kitty with mane",
-            species="Panthera leo",
-            exhibit_id=1,
-        ),
-        AnimalsCreate(
-            name="Tiger",
-            description="Ferocious kitty with stripes",
-            species="Panthera tigris",
-            exhibit_id=1,
-        ),
-        AnimalsCreate(
-            name="Cheetah",
-            description="Ferocious fast kitty",
-            species="Acinonyx jubatus",
-            exhibit_id=1,
-        ),
-        AnimalsCreate(
-            name="Leopard",
-            description="Ferocious spotted kitty",
-            species="Panthera pardus",
-            exhibit_id=1,
-        ),
-        AnimalsCreate(
-            name="Cougar",
-            description="Ferocious mountain kitty",
-            species="Puma concolor",
-            exhibit_id=1,
-        ),
-    ]
-    connection.execute(target.insert(), [animal.dict(exclude_unset=True) for animal in animals])

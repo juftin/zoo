@@ -2,12 +2,9 @@
 Exhibits models
 """
 
-from typing import TYPE_CHECKING, Any, ClassVar, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, Optional
 
 from pydantic import EmailStr
-from sqlalchemy import Table
-from sqlalchemy.event import listens_for
-from sqlalchemy.future import Connection
 from sqlmodel import Field, Relationship
 
 from zoo.models.base import (
@@ -115,31 +112,3 @@ class StaffUpdate(ZooModel):
         """
 
         schema_extra: ClassVar[Dict[str, Any]] = StaffBase.get_openapi_update_example()
-
-
-@listens_for(Staff.__table__, "after_create")  # type: ignore[attr-defined]
-def seed_exhibits_table(target: Table, connection: Connection, **kwargs) -> None:
-    """
-    Seed the Animals table with initial data
-    """
-    staff_members: List[StaffCreate] = [
-        StaffCreate(
-            name="John Doe",
-            job_title="Zookeeper",
-            email=EmailStr("john-does-loves-kitties@gmail.com"),
-            phone="555-555-5555",
-            notes="John Doe is a great zookeeper and loves cats!",
-            exhibit_id=1,
-        ),
-        StaffCreate(
-            name="Jane Doe",
-            job_title="Zookeeper",
-            email=EmailStr("jane-doe@yahoo.com"),
-            phone="555-444-6666",
-            notes="Jane Doe is a highly skilled bird keeper!",
-            exhibit_id=3,
-        ),
-    ]
-    connection.execute(
-        target.insert(), [exhibit.dict(exclude_unset=True) for exhibit in staff_members]
-    )
