@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from zoo.backend.utils import check_model
-from zoo.db import get_session
+from zoo.db import get_async_session
 from zoo.models.staff import Staff, StaffCreate, StaffRead, StaffUpdate
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ staff_router = APIRouter(tags=["staff"])
 async def get_staff_members(
     offset: int = 0,
     limit: int = Query(default=100, le=100),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ) -> List[Staff]:
     """
     Get staff from the database
@@ -40,7 +40,7 @@ async def get_staff_members(
 
 
 @staff_router.get("/staff/{staff_id}", response_model=StaffRead)
-async def get_staff(staff_id: int, session: AsyncSession = Depends(get_session)) -> Staff:
+async def get_staff(staff_id: int, session: AsyncSession = Depends(get_async_session)) -> Staff:
     """
     Get a staff from the database
     """
@@ -50,7 +50,9 @@ async def get_staff(staff_id: int, session: AsyncSession = Depends(get_session))
 
 
 @staff_router.post("/staff", response_model=StaffRead)
-async def create_staff(staff: StaffCreate, session: AsyncSession = Depends(get_session)) -> Staff:
+async def create_staff(
+    staff: StaffCreate, session: AsyncSession = Depends(get_async_session)
+) -> Staff:
     """
     Create a new staff in the database
     """
@@ -62,7 +64,7 @@ async def create_staff(staff: StaffCreate, session: AsyncSession = Depends(get_s
 
 
 @staff_router.delete("/staff/{staff_id}", response_model=StaffRead)
-async def delete_staff(staff_id: int, session: AsyncSession = Depends(get_session)) -> Staff:
+async def delete_staff(staff_id: int, session: AsyncSession = Depends(get_async_session)) -> Staff:
     """
     Delete a staff in the database
     """
@@ -77,7 +79,7 @@ async def delete_staff(staff_id: int, session: AsyncSession = Depends(get_sessio
 
 @staff_router.patch("/staff/{staff_id}", response_model=StaffRead)
 async def update_staff(
-    staff_id: int, staff: StaffUpdate, session: AsyncSession = Depends(get_session)
+    staff_id: int, staff: StaffUpdate, session: AsyncSession = Depends(get_async_session)
 ) -> Staff:
     """
     Update a staff in the database

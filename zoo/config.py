@@ -15,6 +15,8 @@ from pydantic import BaseSettings
 from rich.logging import RichHandler
 from sqlalchemy.engine import URL
 
+from zoo._version import __application__
+
 rich_handler = RichHandler(
     rich_tracebacks=True,
     tracebacks_show_locals=True,
@@ -46,6 +48,8 @@ class ZooSettings(BaseSettings):
     DATABASE_USER: Optional[str] = None
     DATABASE_PASSWORD: Optional[str] = None
     DATABASE_NAME: Optional[str] = None
+
+    DATABASE_SECRET: str = __application__
 
     class Config:
         """

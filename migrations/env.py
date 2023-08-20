@@ -7,8 +7,7 @@ import logging
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy.ext.asyncio import AsyncEngine
-from sqlalchemy.future import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 
 from zoo.config import config as app_config
@@ -68,11 +67,10 @@ async def run_migrations_online() -> None:
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    connectable = AsyncEngine(
-        create_engine(app_config.connection_string, future=True, echo=app_config.DEBUG)
-    )
-    async with connectable.connect() as connection:
+    engine = create_async_engine(app_config.connection_string, echo=app_config.DEBUG, future=True)
+    async with engine.connect() as connection:
         await connection.run_sync(sync_run_migrations)
+    await engine.dispose()
 
 
 if context.is_offline_mode():

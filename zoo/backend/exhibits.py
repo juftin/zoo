@@ -12,7 +12,7 @@ from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
 from zoo.backend.utils import check_model
-from zoo.db import get_session
+from zoo.db import get_async_session
 from zoo.models.animals import Animals, AnimalsRead
 from zoo.models.exhibits import Exhibits, ExhibitsCreate, ExhibitsRead, ExhibitsUpdate
 from zoo.models.staff import Staff, StaffRead
@@ -26,7 +26,7 @@ exhibits_router = APIRouter(tags=["exhibits"])
 async def get_exhibits(
     offset: int = 0,
     limit: int = Query(default=100, le=100),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ) -> List[Exhibits]:
     """
     Get exhibits from the database
@@ -44,7 +44,7 @@ async def get_exhibits(
 
 @exhibits_router.post("/exhibits", response_model=ExhibitsRead)
 async def create_exhibit(
-    exhibit: ExhibitsCreate, session: AsyncSession = Depends(get_session)
+    exhibit: ExhibitsCreate, session: AsyncSession = Depends(get_async_session)
 ) -> Exhibits:
     """
     Create a new exhibit in the database
@@ -59,7 +59,7 @@ async def create_exhibit(
 @exhibits_router.get("/exhibits/{exhibit_id}", response_model=ExhibitsRead)
 async def get_exhibit(
     exhibit_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ) -> Exhibits:
     """
     Get exhibit from the database
@@ -72,7 +72,7 @@ async def get_exhibit(
 @exhibits_router.delete("/exhibits/{exhibit_id}", response_model=ExhibitsRead)
 async def delete_exhibit(
     exhibit_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ) -> Exhibits:
     """
     Delete exhibit from the database
@@ -88,7 +88,7 @@ async def delete_exhibit(
 
 @exhibits_router.patch("/exhibits/{exhibit_id}", response_model=ExhibitsRead)
 async def update_exhibit(
-    exhibit_id: int, exhibit: ExhibitsUpdate, session: AsyncSession = Depends(get_session)
+    exhibit_id: int, exhibit: ExhibitsUpdate, session: AsyncSession = Depends(get_async_session)
 ) -> Exhibits:
     """
     Update exhibit from the database
@@ -107,7 +107,7 @@ async def update_exhibit(
 @exhibits_router.get("/exhibits/{exhibit_id}/animals", response_model=List[AnimalsRead])
 async def get_exhibit_animals(
     exhibit_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ) -> List[Animals]:
     """
     List animals in an exhibit
@@ -127,7 +127,7 @@ async def get_exhibit_animals(
 @exhibits_router.get("/exhibits/{exhibit_id}/staff", response_model=List[StaffRead])
 async def get_exhibit_staff(
     exhibit_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ) -> List[Staff]:
     """
     List staff in an exhibit

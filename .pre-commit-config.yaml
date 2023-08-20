@@ -28,7 +28,8 @@ repos:
             args: [--print-width=88, --tab-width=4]
             exclude: |
                 (?x)(
-                  .github/semantic_release/release_notes.hbs
+                  .github/semantic_release/release_notes.hbs|
+                  docs/openapi.json
                 )
             additional_dependencies:
                 - prettier

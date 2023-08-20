@@ -18,6 +18,9 @@ classifiers = [
 ]
 dependencies = [
   "fastapi~=0.100.1",
+  # "fastapi~=0.98.0",  # OpenAPI 3.0.2 for now
+  "fastapi-users~=12.1.1",
+  "fastapi-users-db-sqlmodel~=0.3.0",
   "sqlmodel==0.0.8",
   "pydantic[email]~=1.10.12",
   # "pydantic==2.1.1", #  TODO: Upgrade to > 1 when SQLModel supports it
@@ -90,7 +93,8 @@ serve = [
 [tool.hatch.envs.default]
 dependencies = [
   "coverage[toml]>=6.5",
-  "pytest"
+  "pytest",
+  "black~=23.7.0"
 ]
 path = ".venv"
 post-install-commands = [
@@ -141,11 +145,11 @@ openapi = "python -m zoo.app --openapi"
 py = [
   "rm -rf ./dist/clients/python",
   """
-          docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
-            -i /local/docs/openapi.json \
-            -g python \
-            -o /local/dist/clients/python
-          """
+      docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
+        -i /local/docs/openapi.json \
+        -g python \
+        -o /local/dist/clients/python
+      """
 ]
 release = [
   "npm install --prefix .github/semantic_release/",
@@ -157,7 +161,6 @@ ts = ["rm -rf ./dist/clients/ts", "npx openapi --input ./docs/openapi.json --out
 
 [tool.hatch.envs.lint]
 dependencies = [
-  "black~=23.7.0",
   "mypy~=1.4.1",
   "ruff~=0.0.281"
 ]
