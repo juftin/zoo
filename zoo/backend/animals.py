@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from zoo.backend.utils import check_model
-from zoo.db import get_session
+from zoo.db import get_async_session
 from zoo.models.animals import Animals, AnimalsCreate, AnimalsRead, AnimalsUpdate
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ animals_router = APIRouter(tags=["animals"])
 async def get_animals(
     offset: int = 0,
     limit: int = Query(default=100, le=100),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ) -> List[Animals]:
     """
     Get animals from the database
@@ -41,7 +41,7 @@ async def get_animals(
 
 @animals_router.post("/animals", response_model=AnimalsRead)
 async def create_animal(
-    animal: AnimalsCreate, session: AsyncSession = Depends(get_session)
+    animal: AnimalsCreate, session: AsyncSession = Depends(get_async_session)
 ) -> Animals:
     """
     Create a new animal in the database
@@ -54,7 +54,7 @@ async def create_animal(
 
 
 @animals_router.get("/animals/{animal_id}", response_model=AnimalsRead)
-async def get_animal(animal_id: int, session: AsyncSession = Depends(get_session)) -> Animals:
+async def get_animal(animal_id: int, session: AsyncSession = Depends(get_async_session)) -> Animals:
     """
     Get an animal from the database
     """
@@ -64,7 +64,9 @@ async def get_animal(animal_id: int, session: AsyncSession = Depends(get_session
 
 
 @animals_router.delete("/animals/{animal_id}", response_model=AnimalsRead)
-async def delete_animal(animal_id: int, session: AsyncSession = Depends(get_session)) -> Animals:
+async def delete_animal(
+    animal_id: int, session: AsyncSession = Depends(get_async_session)
+) -> Animals:
     """
     Delete an animal from the database
     """
@@ -79,7 +81,7 @@ async def delete_animal(animal_id: int, session: AsyncSession = Depends(get_sess
 
 @animals_router.patch("/animals/{animal_id}", response_model=AnimalsRead)
 async def update_animal(
-    animal_id: int, animal: AnimalsUpdate, session: AsyncSession = Depends(get_session)
+    animal_id: int, animal: AnimalsUpdate, session: AsyncSession = Depends(get_async_session)
 ) -> Animals:
     """
     Update an animal in the database

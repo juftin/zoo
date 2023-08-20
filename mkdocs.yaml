@@ -4,6 +4,7 @@ site_name: zoo
 nav:
     - index.md
     - Contributing 🤝: contributing.md
+    - Infrastructure 🏗: infrastructure.md
     - API Clients 💻: clients.md
     - OpenAPI Docs ✨: openapi.md
 theme:
