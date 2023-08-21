@@ -4,14 +4,12 @@ Database Connections
 
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.orm import sessionmaker
-from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from zoo.config import config
+from zoo.config import app_config
 
-engine = create_async_engine(config.connection_string, echo=config.DEBUG, future=True)
-async_session = sessionmaker(
+engine = create_async_engine(app_config.connection_string, echo=app_config.DEBUG, future=True)
+async_session = async_sessionmaker(
     engine, class_=AsyncSession, autocommit=False, expire_on_commit=False, autoflush=False
 )
 

@@ -6,7 +6,7 @@ import datetime
 
 from fastapi.testclient import TestClient
 
-from zoo.models import Animals
+from zoo.schemas.animals import AnimalsRead
 
 
 def test_get_animal(client: TestClient) -> None:
@@ -16,5 +16,5 @@ def test_get_animal(client: TestClient) -> None:
     response = client.get("/animals")
     assert response.status_code == 200
     response_data = response.json()
-    first_animal = Animals(**response_data[0])
-    assert isinstance(first_animal.modified_at, datetime.datetime)
+    first_animal = AnimalsRead(**response_data[0])
+    assert isinstance(first_animal.updated_at, datetime.datetime)

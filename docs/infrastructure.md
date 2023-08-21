@@ -27,21 +27,6 @@ interface for interacting with databases in Python. SQLModel is built on top
 of [Pydantic](https://pydantic-docs.helpmanual.io/) and
 [SQLAlchemy](https://www.sqlalchemy.org/), a popular SQL toolkit and ORM for Python.
 
-#### SQLModel
-
-```python
-from typing import Optional
-
-from sqlmodel import Field, SQLModel
-
-
-class Hero(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
-    secret_name: str
-    age: Optional[int] = None
-```
-
 ### Database Migrations
 
 `zoo` uses [Alembic](https://alembic.sqlalchemy.org/en/latest/) for database migrations. Alembic

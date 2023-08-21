@@ -11,7 +11,7 @@ import fastapi
 import starlette
 import uvicorn
 from fastapi.routing import APIRoute
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from rich.logging import RichHandler
 from sqlalchemy.engine import URL
 
@@ -48,32 +48,28 @@ class ZooSettings(BaseSettings):
     DATABASE_USER: Optional[str] = None
     DATABASE_PASSWORD: Optional[str] = None
     DATABASE_NAME: Optional[str] = None
+    JWT_EXPIRATION: Optional[int] = None
 
     DATABASE_SECRET: str = __application__
 
-    class Config:
-        """
-        Pydantic configuration
-        """
-
-        env_prefix = "ZOO_"
-        case_sensitive = True
+    model_config = SettingsConfigDict(
+        env_prefix="ZOO_",
+        case_sensitive=True,
+    )
 
     @property
     def connection_string(self) -> str:
         """
         Get the database connection string
         """
-        database_url = str(
-            URL.create(
-                drivername=self.DATABASE_DRIVER,
-                username=self.DATABASE_USER,
-                password=self.DATABASE_PASSWORD,
-                host=self.DATABASE_HOST or self.DATABASE_FILE,
-                port=self.DATABASE_PORT,
-                database=self.DATABASE_NAME,
-            )
-        )
+        database_url = URL.create(
+            drivername=self.DATABASE_DRIVER,
+            username=self.DATABASE_USER,
+            password=self.DATABASE_PASSWORD,
+            host=self.DATABASE_HOST or self.DATABASE_FILE,
+            port=self.DATABASE_PORT,
+            database=self.DATABASE_NAME,
+        ).render_as_string(hide_password=False)
         if all(
             [
                 self.DATABASE_HOST is None,
@@ -104,4 +100,4 @@ class ZooSettings(BaseSettings):
         return f"{route.tags[0]}-{route.name}"
 
 
-config = ZooSettings()
+app_config = ZooSettings()

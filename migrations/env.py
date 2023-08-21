@@ -8,18 +8,18 @@ from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlmodel import SQLModel
 
-from zoo.config import config as app_config
+from zoo.config import app_config
 from zoo.models import __all_models__
+from zoo.models.base import Base
 
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Add Zoo models to the metadata
+# Register all Database Models with Alembic
 known_models = __all_models__
-target_metadata = SQLModel.metadata
+target_metadata = Base.metadata
 
 if not app_config.DOCKER:
     app_config.rich_logging(loggers=[logging.getLogger()])
@@ -67,6 +67,7 @@ async def run_migrations_online() -> None:
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
+    # raise ValueError(app_config.connection_string)
     engine = create_async_engine(app_config.connection_string, echo=app_config.DEBUG, future=True)
     async with engine.connect() as connection:
         await connection.run_sync(sync_run_migrations)

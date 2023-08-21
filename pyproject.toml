@@ -18,13 +18,11 @@ classifiers = [
 ]
 dependencies = [
   "fastapi~=0.100.1",
-  # "fastapi~=0.98.0",  # OpenAPI 3.0.2 for now
-  "fastapi-users~=12.1.1",
-  "fastapi-users-db-sqlmodel~=0.3.0",
-  "sqlmodel==0.0.8",
-  "pydantic[email]~=1.10.12",
-  # "pydantic==2.1.1", #  TODO: Upgrade to > 1 when SQLModel supports it
-  # "pydantic-extra-types~=2.0.0",
+  "fastapi-users[sqlalchemy]~=12.1.1",
+  "pydantic[email]==2.1.1",
+  "pydantic-settings~=2.0.3",
+  "pydantic-extra-types~=2.0.0",
+  "sqlalchemy[asyncio]~=2.0.20",
   "aiosqlite~=0.19.0",
   "asyncpg~=0.28.0",
   "greenlet~=2.0.2",
@@ -32,7 +30,8 @@ dependencies = [
   "gunicorn~=21.2.0",
   "alembic~=1.11.2",
   "httpx~=0.24.1",
-  "rich~=13.5.2"
+  "rich~=13.5.2",
+  "click~=8.1.7"
 ]
 description = "An asynchronous zoo API, powered by FastAPI and SQLModel"
 dynamic = ["version"]
@@ -141,15 +140,15 @@ detached = false
 all = ["docs"]
 clients = ["py", "ts"]
 docs = ["openapi"]
-openapi = "python -m zoo.app --openapi"
+openapi = "python -m zoo openapi"
 py = [
   "rm -rf ./dist/clients/python",
   """
-      docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
-        -i /local/docs/openapi.json \
-        -g python \
-        -o /local/dist/clients/python
-      """
+        docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
+          -i /local/docs/openapi.json \
+          -g python \
+          -o /local/dist/clients/python
+        """
 ]
 release = [
   "npm install --prefix .github/semantic_release/",
