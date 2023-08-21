@@ -38,25 +38,25 @@
         "operationId": "animals-get_animals",
         "parameters": [
           {
+            "name": "offset",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Offset",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
+              "default": 0,
+              "title": "Offset"
+            }
           },
           {
+            "name": "limit",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "maximum": 100.0,
-              "title": "Limit",
-              "default": 100
-            },
-            "name": "limit",
-            "in": "query"
+              "maximum": 100,
+              "default": 100,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -65,10 +65,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/AnimalsRead"
                   },
-                  "type": "array",
                   "title": "Response Animals-Get Animals"
                 }
               }
@@ -94,14 +94,14 @@
         "description": "Create a new animal in the database",
         "operationId": "animals-create_animal",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AnimalsCreate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -137,13 +137,13 @@
         "operationId": "animals-get_animal",
         "parameters": [
           {
+            "name": "animal_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Animal Id"
-            },
-            "name": "animal_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -178,13 +178,13 @@
         "operationId": "animals-delete_animal",
         "parameters": [
           {
+            "name": "animal_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Animal Id"
-            },
-            "name": "animal_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -219,24 +219,24 @@
         "operationId": "animals-update_animal",
         "parameters": [
           {
+            "name": "animal_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Animal Id"
-            },
-            "name": "animal_id",
-            "in": "path"
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AnimalsUpdate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -272,25 +272,25 @@
         "operationId": "exhibits-get_exhibits",
         "parameters": [
           {
+            "name": "offset",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Offset",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
+              "default": 0,
+              "title": "Offset"
+            }
           },
           {
+            "name": "limit",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "maximum": 100.0,
-              "title": "Limit",
-              "default": 100
-            },
-            "name": "limit",
-            "in": "query"
+              "maximum": 100,
+              "default": 100,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -299,10 +299,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ExhibitsRead"
                   },
-                  "type": "array",
                   "title": "Response Exhibits-Get Exhibits"
                 }
               }
@@ -328,14 +328,14 @@
         "description": "Create a new exhibit in the database",
         "operationId": "exhibits-create_exhibit",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ExhibitsCreate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -371,13 +371,13 @@
         "operationId": "exhibits-get_exhibit",
         "parameters": [
           {
+            "name": "exhibit_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Exhibit Id"
-            },
-            "name": "exhibit_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -412,13 +412,13 @@
         "operationId": "exhibits-delete_exhibit",
         "parameters": [
           {
+            "name": "exhibit_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Exhibit Id"
-            },
-            "name": "exhibit_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -453,24 +453,24 @@
         "operationId": "exhibits-update_exhibit",
         "parameters": [
           {
+            "name": "exhibit_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Exhibit Id"
-            },
-            "name": "exhibit_id",
-            "in": "path"
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ExhibitsUpdate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -506,13 +506,13 @@
         "operationId": "exhibits-get_exhibit_animals",
         "parameters": [
           {
+            "name": "exhibit_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Exhibit Id"
-            },
-            "name": "exhibit_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -521,10 +521,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/AnimalsRead"
                   },
-                  "type": "array",
                   "title": "Response Exhibits-Get Exhibit Animals"
                 }
               }
@@ -553,13 +553,13 @@
         "operationId": "exhibits-get_exhibit_staff",
         "parameters": [
           {
+            "name": "exhibit_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Exhibit Id"
-            },
-            "name": "exhibit_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -568,10 +568,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/StaffRead"
                   },
-                  "type": "array",
                   "title": "Response Exhibits-Get Exhibit Staff"
                 }
               }
@@ -600,25 +600,25 @@
         "operationId": "staff-get_staff_members",
         "parameters": [
           {
+            "name": "offset",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Offset",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
+              "default": 0,
+              "title": "Offset"
+            }
           },
           {
+            "name": "limit",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "maximum": 100.0,
-              "title": "Limit",
-              "default": 100
-            },
-            "name": "limit",
-            "in": "query"
+              "maximum": 100,
+              "default": 100,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -627,10 +627,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/StaffRead"
                   },
-                  "type": "array",
                   "title": "Response Staff-Get Staff Members"
                 }
               }
@@ -656,14 +656,14 @@
         "description": "Create a new staff in the database",
         "operationId": "staff-create_staff",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/StaffCreate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -699,13 +699,13 @@
         "operationId": "staff-get_staff",
         "parameters": [
           {
+            "name": "staff_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Staff Id"
-            },
-            "name": "staff_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -740,13 +740,13 @@
         "operationId": "staff-delete_staff",
         "parameters": [
           {
+            "name": "staff_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Staff Id"
-            },
-            "name": "staff_id",
-            "in": "path"
+            }
           }
         ],
         "responses": {
@@ -781,24 +781,24 @@
         "operationId": "staff-update_staff",
         "parameters": [
           {
+            "name": "staff_id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "title": "Staff Id"
-            },
-            "name": "staff_id",
-            "in": "path"
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/StaffUpdate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -835,7 +835,7 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Body_auth-auth_jwt.login"
+                "$ref": "#/components/schemas/Body_auth-auth"
               }
             }
           },
@@ -987,512 +987,6 @@
           }
         }
       }
-    },
-    "/auth/forgot-password": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Reset:Forgot Password",
-        "operationId": "auth-reset:forgot_password",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_auth-reset_forgot_password"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/reset-password": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Reset:Reset Password",
-        "operationId": "auth-reset:reset_password",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_auth-reset_reset_password"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "RESET_PASSWORD_BAD_TOKEN": {
-                    "summary": "Bad or expired token.",
-                    "value": {
-                      "detail": "RESET_PASSWORD_BAD_TOKEN"
-                    }
-                  },
-                  "RESET_PASSWORD_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "RESET_PASSWORD_INVALID_PASSWORD",
-                        "reason": "Password should be at least 3 characters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/request-verify-token": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Verify:Request-Token",
-        "operationId": "auth-verify:request-token",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_auth-verify_request-token"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/verify": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Verify:Verify",
-        "operationId": "auth-verify:verify",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_auth-verify_verify"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "VERIFY_USER_BAD_TOKEN": {
-                    "summary": "Bad token, not existing user ornot the e-mail currently set for the user.",
-                    "value": {
-                      "detail": "VERIFY_USER_BAD_TOKEN"
-                    }
-                  },
-                  "VERIFY_USER_ALREADY_VERIFIED": {
-                    "summary": "The user is already verified.",
-                    "value": {
-                      "detail": "VERIFY_USER_ALREADY_VERIFIED"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/me": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:Current User",
-        "operationId": "users-users:current_user",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:Patch Current User",
-        "operationId": "users-users:patch_current_user",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
-                    "summary": "A user with this email already exists.",
-                    "value": {
-                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
-                    }
-                  },
-                  "UPDATE_USER_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "UPDATE_USER_INVALID_PASSWORD",
-                        "reason": "Password should beat least 3 characters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:User",
-        "operationId": "users-users:user",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:Delete User",
-        "operationId": "users-users:delete_user",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:Patch User",
-        "operationId": "users-users:patch_user",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            },
-            "name": "id",
-            "in": "path"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
-                    "summary": "A user with this email already exists.",
-                    "value": {
-                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
-                    }
-                  },
-                  "UPDATE_USER_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "UPDATE_USER_INVALID_PASSWORD",
-                        "reason": "Password should beat least 3 characters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
     }
   },
   "components": {
@@ -1505,17 +999,38 @@
             "description": "The name of the animal"
           },
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "The description of the animal"
           },
           "species": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Species",
             "description": "The species of the animal"
           },
           "exhibit_id": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Exhibit Id",
             "description": "The id of the exhibit"
           }
@@ -1525,13 +1040,13 @@
           "name"
         ],
         "title": "AnimalsCreate",
-        "description": "Animals model: create",
+        "description": "\n    Animals model: create\n    ",
         "examples": [
           {
-            "name": "Lion",
             "description": "Ferocious kitty",
-            "species": "Panthera leo",
-            "exhibit_id": 1
+            "exhibit_id": 1,
+            "name": "Lion",
+            "species": "Panthera leo"
           }
         ]
       },
@@ -1548,17 +1063,38 @@
             "description": "The name of the animal"
           },
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "The description of the animal"
           },
           "species": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Species",
             "description": "The species of the animal"
           },
           "exhibit_id": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Exhibit Id",
             "description": "The id of the exhibit"
           },
@@ -1568,15 +1104,22 @@
             "title": "Created At",
             "description": "The date and time the record was created"
           },
-          "modified_at": {
+          "updated_at": {
             "type": "string",
             "format": "date-time",
-            "title": "Modified At",
+            "title": "Updated At",
             "description": "The date and time the record was last modified"
           },
           "deleted_at": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Deleted At",
             "description": "The date and time the record was deleted"
           }
@@ -1584,52 +1127,82 @@
         "type": "object",
         "required": [
           "id",
-          "name"
+          "name",
+          "created_at",
+          "updated_at"
         ],
         "title": "AnimalsRead",
-        "description": "Animals model: read",
+        "description": "\n    Animals model: read\n    ",
         "examples": [
           {
-            "name": "Lion",
+            "created_at": "2021-01-01T00:00:00.000000",
             "description": "Ferocious kitty",
-            "species": "Panthera leo",
             "exhibit_id": 1,
             "id": 1,
-            "created_at": "2021-01-01T00:00:00.000000",
-            "modified_at": "2021-01-02T09:12:34.567890"
+            "modified_at": "2021-01-02T09:12:34.567890",
+            "name": "Lion",
+            "species": "Panthera leo"
           }
         ]
       },
       "AnimalsUpdate": {
         "properties": {
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Name",
             "description": "The name of the animal"
           },
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "The description of the animal"
           },
           "species": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Species",
             "description": "The species of the animal"
           },
           "exhibit_id": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Exhibit Id",
             "description": "The id of the exhibit"
           }
         },
         "type": "object",
         "title": "AnimalsUpdate",
-        "description": "Animals model: update",
+        "description": "\n    Animals model: update\n    ",
         "examples": [
           {
-            "name": "Lion",
-            "description": "Ferocious kitty"
+            "description": "Ferocious kitty",
+            "name": "Lion"
           }
         ]
       },
@@ -1651,11 +1224,18 @@
         ],
         "title": "BearerResponse"
       },
-      "Body_auth-auth_jwt.login": {
+      "Body_auth-auth": {
         "properties": {
           "grant_type": {
-            "type": "string",
-            "pattern": "password",
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Grant Type"
           },
           "username": {
@@ -1672,11 +1252,25 @@
             "default": ""
           },
           "client_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Client Id"
           },
           "client_secret": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Client Secret"
           }
         },
@@ -1686,65 +1280,6 @@
           "password"
         ],
         "title": "Body_auth-auth:jwt.login"
-      },
-      "Body_auth-reset_forgot_password": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email"
-        ],
-        "title": "Body_auth-reset:forgot_password"
-      },
-      "Body_auth-reset_reset_password": {
-        "properties": {
-          "token": {
-            "type": "string",
-            "title": "Token"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
-          }
-        },
-        "type": "object",
-        "required": [
-          "token",
-          "password"
-        ],
-        "title": "Body_auth-reset:reset_password"
-      },
-      "Body_auth-verify_request-token": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email"
-        ],
-        "title": "Body_auth-verify:request-token"
-      },
-      "Body_auth-verify_verify": {
-        "properties": {
-          "token": {
-            "type": "string",
-            "title": "Token"
-          }
-        },
-        "type": "object",
-        "required": [
-          "token"
-        ],
-        "title": "Body_auth-verify:verify"
       },
       "ErrorModel": {
         "properties": {
@@ -1777,12 +1312,26 @@
             "description": "The name of the exhibit"
           },
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "The description of the exhibit"
           },
           "location": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Location",
             "description": "The location of the exhibit"
           }
@@ -1792,12 +1341,12 @@
           "name"
         ],
         "title": "ExhibitsCreate",
-        "description": "Exhibits model: create",
+        "description": "\n    Exhibits model: create\n    ",
         "examples": [
           {
-            "name": "Big Cat Exhibit",
             "description": "A big cat exhibit",
-            "location": "North America"
+            "location": "North America",
+            "name": "Big Cat Exhibit"
           }
         ]
       },
@@ -1814,12 +1363,26 @@
             "description": "The name of the exhibit"
           },
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "The description of the exhibit"
           },
           "location": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Location",
             "description": "The location of the exhibit"
           },
@@ -1829,15 +1392,22 @@
             "title": "Created At",
             "description": "The date and time the record was created"
           },
-          "modified_at": {
+          "updated_at": {
             "type": "string",
             "format": "date-time",
-            "title": "Modified At",
+            "title": "Updated At",
             "description": "The date and time the record was last modified"
           },
           "deleted_at": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Deleted At",
             "description": "The date and time the record was deleted"
           }
@@ -1845,42 +1415,65 @@
         "type": "object",
         "required": [
           "id",
-          "name"
+          "name",
+          "created_at",
+          "updated_at"
         ],
         "title": "ExhibitsRead",
-        "description": "Exhibits model: read",
+        "description": "\n    Exhibits model: read\n    ",
         "examples": [
           {
-            "name": "Big Cat Exhibit",
-            "description": "A big cat exhibit",
-            "location": "North America",
-            "id": 1,
             "created_at": "2021-01-01T00:00:00.000000",
-            "modified_at": "2021-01-02T09:12:34.567890"
+            "description": "A big cat exhibit",
+            "id": 1,
+            "location": "North America",
+            "modified_at": "2021-01-02T09:12:34.567890",
+            "name": "Big Cat Exhibit"
           }
         ]
       },
       "ExhibitsUpdate": {
         "properties": {
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Name",
             "description": "The name of the exhibit"
           },
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "The description of the exhibit"
           },
           "location": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Location",
             "description": "The location of the exhibit"
           }
         },
         "type": "object",
         "title": "ExhibitsUpdate",
-        "description": "Exhibits model: update",
+        "description": "\n    Exhibits model: update\n    ",
         "examples": [
           {
             "name": "Big Cat Exhibit"
@@ -1926,11 +1519,11 @@
           "timestamp"
         ],
         "title": "Health",
-        "description": "Health model",
+        "description": "\n    Health model\n    ",
         "examples": [
           {
-            "status": "OK",
             "code": 200,
+            "status": "OK",
             "timestamp": "2021-05-01T12:00:00.000000+00:00"
           }
         ]
@@ -1943,28 +1536,63 @@
             "description": "The name of the staff"
           },
           "job_title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Job Title",
             "description": "The job title of the staff"
           },
           "email": {
-            "type": "string",
-            "format": "email",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Email",
             "description": "The email of the staff"
           },
           "phone": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Phone",
             "description": "The phone number of the staff"
           },
           "notes": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Notes",
             "description": "Optional notes regarding the staff member"
           },
           "exhibit_id": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Exhibit Id",
             "description": "The id of the exhibit"
           }
@@ -1974,15 +1602,15 @@
           "name"
         ],
         "title": "StaffCreate",
-        "description": "Staff model: create",
+        "description": "\n    Staff model: create\n    ",
         "examples": [
           {
-            "name": "John Doe",
-            "job_title": "Zookeeper",
             "email": "big.cat.lover@gmail.com",
-            "phone": "555-555-5555",
+            "exhibit_id": 1,
+            "job_title": "Zookeeper",
+            "name": "John Doe",
             "notes": "John Doe is a great zookeeper and loves cats!",
-            "exhibit_id": 1
+            "phone": "555-555-5555"
           }
         ]
       },
@@ -1999,28 +1627,63 @@
             "description": "The name of the staff"
           },
           "job_title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Job Title",
             "description": "The job title of the staff"
           },
           "email": {
-            "type": "string",
-            "format": "email",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Email",
             "description": "The email of the staff"
           },
           "phone": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Phone",
             "description": "The phone number of the staff"
           },
           "notes": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Notes",
             "description": "Optional notes regarding the staff member"
           },
           "exhibit_id": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Exhibit Id",
             "description": "The id of the exhibit"
           },
@@ -2030,15 +1693,22 @@
             "title": "Created At",
             "description": "The date and time the record was created"
           },
-          "modified_at": {
+          "updated_at": {
             "type": "string",
             "format": "date-time",
-            "title": "Modified At",
+            "title": "Updated At",
             "description": "The date and time the record was last modified"
           },
           "deleted_at": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Deleted At",
             "description": "The date and time the record was deleted"
           }
@@ -2046,66 +1716,113 @@
         "type": "object",
         "required": [
           "id",
-          "name"
+          "name",
+          "created_at",
+          "updated_at"
         ],
         "title": "StaffRead",
-        "description": "Staff model: read",
+        "description": "\n    Staff model: read\n    ",
         "examples": [
           {
-            "name": "John Doe",
-            "job_title": "Zookeeper",
+            "created_at": "2021-01-01T00:00:00.000000",
             "email": "big.cat.lover@gmail.com",
-            "phone": "555-555-5555",
-            "notes": "John Doe is a great zookeeper and loves cats!",
             "exhibit_id": 1,
             "id": 1,
-            "created_at": "2021-01-01T00:00:00.000000",
-            "modified_at": "2021-01-02T09:12:34.567890"
+            "job_title": "Zookeeper",
+            "modified_at": "2021-01-02T09:12:34.567890",
+            "name": "John Doe",
+            "notes": "John Doe is a great zookeeper and loves cats!",
+            "phone": "555-555-5555"
           }
         ]
       },
       "StaffUpdate": {
         "properties": {
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Name",
             "description": "The name of the staff"
           },
           "job_title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Job Title",
             "description": "The job title of the staff"
           },
           "email": {
-            "type": "string",
-            "format": "email",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Email",
             "description": "The email of the staff"
           },
           "phone": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Phone",
             "description": "The phone number of the staff"
           },
           "notes": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Notes",
             "description": "Optional notes regarding the staff member"
           },
           "exhibit_id": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Exhibit Id",
             "description": "The id of the exhibit"
           }
         },
         "type": "object",
+        "required": [
+          "name"
+        ],
         "title": "StaffUpdate",
-        "description": "Staff model: update",
+        "description": "\n    Staff model: update\n    ",
         "examples": [
           {
-            "name": "John Doe",
+            "email": "big.cat.lover@gmail.com",
             "job_title": "Zookeeper",
-            "email": "big.cat.lover@gmail.com"
+            "name": "John Doe"
           }
         ]
       },
@@ -2121,17 +1838,38 @@
             "title": "Password"
           },
           "is_active": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Is Active",
             "default": true
           },
           "is_superuser": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Is Superuser",
             "default": false
           },
           "is_verified": {
-            "type": "boolean",
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Is Verified",
             "default": false
           }
@@ -2142,7 +1880,7 @@
           "password"
         ],
         "title": "UserCreate",
-        "description": "FastAPI Users - User Create Model"
+        "description": "\n    FastAPI Users - User Create Model\n    "
       },
       "UserRead": {
         "properties": {
@@ -2152,13 +1890,15 @@
             "title": "Created At",
             "description": "The date and time the record was created"
           },
-          "modified_at": {
+          "updated_at": {
             "type": "string",
             "format": "date-time",
-            "title": "Modified At",
+            "title": "Updated At",
             "description": "The date and time the record was last modified"
           },
           "id": {
+            "type": "string",
+            "format": "uuid",
             "title": "Id"
           },
           "email": {
@@ -2184,38 +1924,13 @@
         },
         "type": "object",
         "required": [
+          "created_at",
+          "updated_at",
+          "id",
           "email"
         ],
         "title": "UserRead",
-        "description": "FastAPI Users - User Read Model"
-      },
-      "UserUpdate": {
-        "properties": {
-          "password": {
-            "type": "string",
-            "title": "Password"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email"
-          },
-          "is_active": {
-            "type": "boolean",
-            "title": "Is Active"
-          },
-          "is_superuser": {
-            "type": "boolean",
-            "title": "Is Superuser"
-          },
-          "is_verified": {
-            "type": "boolean",
-            "title": "Is Verified"
-          }
-        },
-        "type": "object",
-        "title": "UserUpdate",
-        "description": "FastAPI Users - User Update Model"
+        "description": "\n    FastAPI Users - User Read Model\n    "
       },
       "ValidationError": {
         "properties": {

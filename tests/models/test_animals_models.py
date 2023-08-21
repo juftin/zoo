@@ -5,7 +5,7 @@ Animal Tests
 import pytest
 from pydantic import ValidationError
 
-from zoo.models.animals import AnimalsBase
+from zoo.schemas.animals import AnimalsBase
 
 
 def test_animal_base_success():

@@ -10,8 +10,8 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from starlette.responses import HTMLResponse
 
 from zoo._version import __application__, __favicon__
-from zoo.models.base import HasDeletedField
-from zoo.models.utils import Health
+from zoo.models.base import DatabaseTypeDeletedAt
+from zoo.schemas.utils import Health
 
 utils_router = APIRouter(tags=["utilities"])
 
@@ -41,25 +41,25 @@ def swagger_docs() -> HTMLResponse:
 
 
 def check_model(
-    model_instance: Optional[HasDeletedField],
-    model_class: Type[HasDeletedField],
+    model_instance: Optional[DatabaseTypeDeletedAt],
+    model_class: Type[DatabaseTypeDeletedAt],
     id: int,  # noqa: A002
-) -> HasDeletedField:
+) -> DatabaseTypeDeletedAt:
     """
     Handle a missing model
 
     Parameters
     ----------
-    model_instance : Optional[HasDeletedField]
+    model_instance : Optional[DatabaseType]
         The model instance to check
-    model_class : Type[HasDeletedField]
+    model_class : Type[DatabaseType]
         The model class to check
     id : int
         The ID of the model instance
 
     Returns
     -------
-    HasDeletedField
+    DatabaseType
         The model instance (if it exists)
 
     Raises
