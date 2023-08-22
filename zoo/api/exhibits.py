@@ -45,10 +45,6 @@ async def get_exhibits(
     return exhibit_models
 
 
-class Exhibit:
-    pass
-
-
 @exhibits_router.post("/exhibits", response_model=ExhibitsRead)
 async def create_exhibit(
     exhibit: ExhibitsCreate, session: AsyncSession = Depends(get_async_session)
@@ -56,7 +52,7 @@ async def create_exhibit(
     """
     Create a new exhibit in the database
     """
-    new_exhibit = Exhibit(**exhibit.model_dump(exclude_unset=True))
+    new_exhibit = Exhibits(**exhibit.model_dump(exclude_unset=True))
     session.add(new_exhibit)
     await session.commit()
     await session.refresh(new_exhibit)
@@ -106,12 +102,11 @@ async def update_exhibit(
     db_exhibit: Optional[Exhibits] = await session.get(Exhibits, exhibit_id)
     db_exhibit = check_model(model_instance=db_exhibit, model_class=Exhibits, id=exhibit_id)
     for field, value in exhibit.model_dump(exclude_unset=True).items():
-        if value is not None:
-            setattr(db_exhibit, field, value)
+        setattr(db_exhibit, field, value)
     session.add(db_exhibit)
     await session.commit()
     await session.refresh(db_exhibit)
-    exhibit_model = ExhibitsRead.model_validate(exhibit)
+    exhibit_model = ExhibitsRead.model_validate(db_exhibit)
     return exhibit_model
 
 

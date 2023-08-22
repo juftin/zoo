@@ -49,6 +49,7 @@ class ZooSettings(BaseSettings):
     DATABASE_PASSWORD: Optional[str] = None
     DATABASE_NAME: Optional[str] = None
     JWT_EXPIRATION: Optional[int] = None
+    SEED_DATA: bool = True
 
     DATABASE_SECRET: str = __application__
 
