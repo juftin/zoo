@@ -1,4 +1,4 @@
-"""Seed Data
+"""Seed Data [Optional]
 
 Revision ID: e69c9264375d
 Revises: e5fccc3522ce
@@ -12,6 +12,7 @@ from alembic import op
 from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
+from zoo.config import app_config
 from zoo.models.animals import Animals
 from zoo.models.exhibits import Exhibits
 from zoo.models.staff import Staff
@@ -86,6 +87,8 @@ def upgrade() -> None:
     """
     Seed the database with initial data.
     """
+    if app_config.SEED_DATA is False:
+        return
     connection = op.get_bind()
     session = Session(bind=connection)
     with session.begin():
@@ -102,6 +105,8 @@ def downgrade() -> None:
     """
     Rollback the database upgrade
     """
+    if app_config.SEED_DATA is False:
+        return
     animal_delete = delete(Animals).where(Animals.name.in_([animal.name for animal in animals]))
     staff_delete = delete(Staff).where(
         Staff.name.in_([staff_member.name for staff_member in staff_members])

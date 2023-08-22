@@ -5,6 +5,7 @@ Alembic migration environment.
 import asyncio
 import logging
 from logging.config import fileConfig
+from os import getenv
 
 from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -21,7 +22,7 @@ if config.config_file_name is not None:
 known_models = __all_models__
 target_metadata = Base.metadata
 
-if not app_config.DOCKER:
+if not app_config.DOCKER and getenv("PYTEST_CURRENT_TEST", None) is None:
     app_config.rich_logging(loggers=[logging.getLogger()])
 
 
