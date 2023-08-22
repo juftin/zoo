@@ -9,7 +9,12 @@ from typing import AsyncGenerator
 
 from fastapi import Depends, FastAPI
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
-from fastapi_users.authentication import AuthenticationBackend, BearerTransport
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    CookieTransport,
+    JWTStrategy,
+)
 from fastapi_users.authentication.strategy import AccessTokenDatabase, DatabaseStrategy
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
 from fastapi_users_db_sqlalchemy.access_token import (
@@ -18,6 +23,7 @@ from fastapi_users_db_sqlalchemy.access_token import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from zoo._version import __application__
 from zoo.config import app_config
 from zoo.db import get_async_session
 from zoo.models.base import Base, CreatedUpdatedMixin, UpdatedAtMixin
@@ -25,6 +31,7 @@ from zoo.schemas.users import UserCreate, UserRead
 
 auth_endpoint = "auth"
 jwt_endpoint = "jwt"
+cookie_endpoint = "cookie"
 
 
 class User(SQLAlchemyBaseUserTableUUID, CreatedUpdatedMixin, Base):
@@ -72,6 +79,15 @@ async def get_user_manager(user_db=Depends(get_user_db)) -> AsyncGenerator[UserM
     yield UserManager(user_db=user_db)
 
 
+def get_jwt_strategy() -> JWTStrategy:
+    """
+    Get a DatabaseStrategy using the AccessTokenDatabase
+    """
+    return JWTStrategy(
+        secret=app_config.DATABASE_SECRET, lifetime_seconds=app_config.JWT_EXPIRATION
+    )
+
+
 def get_database_strategy(
     access_token_db: AccessTokenDatabase = Depends(get_access_token_db),
 ) -> DatabaseStrategy:
@@ -82,14 +98,23 @@ def get_database_strategy(
 
 
 bearer_transport = BearerTransport(tokenUrl=f"{auth_endpoint}/{jwt_endpoint}/login")
+cookie_transport = CookieTransport(cookie_name=f"{__application__}-auth", cookie_max_age=3600)
+
+
 auth_backend = AuthenticationBackend(
     name="jwt",
     transport=bearer_transport,
     get_strategy=get_database_strategy,
 )
+cookie_auth_backend = AuthenticationBackend(
+    name="cookie",
+    transport=cookie_transport,
+    get_strategy=get_jwt_strategy,
+)
 
 fastapi_users = FastAPIUsers[User, uuid.UUID](
-    get_user_manager=get_user_manager, auth_backends=[auth_backend]
+    get_user_manager=get_user_manager,
+    auth_backends=[auth_backend, cookie_auth_backend],
 )
 
 current_active_user = fastapi_users.current_user(active=True)
@@ -146,6 +171,11 @@ def bootstrap_fastapi_users(app: FastAPI) -> None:
     app.include_router(
         fastapi_users.get_auth_router(auth_backend),
         prefix=f"/{auth_endpoint}/{jwt_endpoint}",
+        tags=[auth_endpoint],
+    )
+    app.include_router(
+        fastapi_users.get_auth_router(cookie_auth_backend),
+        prefix=f"/{auth_endpoint}/{cookie_endpoint}",
         tags=[auth_endpoint],
     )
     app.include_router(
