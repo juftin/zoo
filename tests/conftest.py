@@ -9,13 +9,13 @@ from typing import Generator
 import pytest
 from alembic import command
 from alembic.config import Config
-from starlette.testclient import TestClient
+from fastapi.testclient import TestClient
 
 from zoo.config import app_config
 
 
 @pytest.fixture(scope="session")
-def client() -> Generator[TestClient, None, None]:
+def migrated_client() -> Generator[TestClient, None, None]:
     """
     Test client for the FastAPI app with a shared temporary database.
 
@@ -28,8 +28,10 @@ def client() -> Generator[TestClient, None, None]:
         temp_path = pathlib.Path(temp_dir)
         temp_db = temp_path / "zoo.sqlite"
         monkeypatch.setattr(target=app_config, name="DATABASE_FILE", value=str(temp_db))
+        monkeypatch.setenv("ZOO_DATABASE_FILE", str(temp_db))
         # Set the seed data flag to True
         monkeypatch.setattr(target=app_config, name="SEED_DATA", value=True)
+        monkeypatch.setenv("ZOO_SEED_DATA", "True")
         # Change directory to the root of the project
         zoo_dir = pathlib.Path(__file__).parent.parent
         monkeypatch.chdir(zoo_dir)

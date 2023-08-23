@@ -10,36 +10,36 @@ from fastapi.testclient import TestClient
 from zoo.schemas.staff import StaffCreate, StaffRead, StaffUpdate
 
 
-def test_get_staff_members(client: TestClient) -> None:
+def test_get_staff_members(migrated_client: TestClient) -> None:
     """
     Test GET /staff
     """
-    response = client.get("/staff")
+    response = migrated_client.get("/staff")
     assert response.status_code == 200
     first_staff = StaffRead(**response.json()[0])
     assert isinstance(first_staff.updated_at, datetime.datetime)
 
 
-def test_get_staff(client: TestClient) -> None:
+def test_get_staff(migrated_client: TestClient) -> None:
     """
     Test GET /staff/{staff_id}
     """
-    response = client.get("/staff/1")
+    response = migrated_client.get("/staff/1")
     assert response.status_code == 200
     first_staff = StaffRead(**response.json())
     assert isinstance(first_staff.updated_at, datetime.datetime)
 
 
-def test_get_staff_failure(client: TestClient) -> None:
+def test_get_staff_failure(migrated_client: TestClient) -> None:
     """
     Test GET /staff/{staff_id} - failure
     """
-    response = client.get("/staff/100")
+    response = migrated_client.get("/staff/100")
     assert response.status_code == 404
     assert response.json() == {"detail": "Error: `Staff` data not found or deleted - ID: 100"}
 
 
-def test_create_staff(client: TestClient) -> None:
+def test_create_staff(migrated_client: TestClient) -> None:
     """
     Test POST /staff
     """
@@ -48,7 +48,7 @@ def test_create_staff(client: TestClient) -> None:
         name=test_name,
         notes="test",
     )
-    response = client.post(
+    response = migrated_client.post(
         "/staff",
         json=staff_body.model_dump(exclude_unset=True),
     )
@@ -59,7 +59,7 @@ def test_create_staff(client: TestClient) -> None:
     assert staff.notes == "test"
 
 
-def test_update_staff(client: TestClient) -> None:
+def test_update_staff(migrated_client: TestClient) -> None:
     """
     Test PATCH /staff/{staff_id}
     """
@@ -67,7 +67,7 @@ def test_update_staff(client: TestClient) -> None:
     staff_body = StaffUpdate(
         notes=test_name,
     )
-    response = client.patch(
+    response = migrated_client.patch(
         "/staff/1",
         json=staff_body.model_dump(exclude_unset=True),
     )
