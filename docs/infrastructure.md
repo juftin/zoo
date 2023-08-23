@@ -7,25 +7,83 @@ asynchronous web framework for building APIs with Python. FastAPI, in turn, is b
 of [Starlette](https://www.starlette.io/), a lightweight ASGI framework/toolkit, and
 [pydantic](https://docs.pydantic.dev/latest/), a data validation and settings management library.
 
-#### FastAPI
+??? example "FastAPI"
 
-```python
-from fastapi import FastAPI
+    ```python
+    from fastapi import FastAPI
 
-app = FastAPI()
+    app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-```
+    @app.get("/")
+    async def root():
+        return {"message": "Hello World"}
+    ```
 
 ### Database ORM
 
-`zoo` uses [SQLModel](https://sqlmodel.tiangolo.com/), a library that provides a declarative
-interface for interacting with databases in Python. SQLModel is built on top
-of [Pydantic](https://pydantic-docs.helpmanual.io/) and
-[SQLAlchemy](https://www.sqlalchemy.org/), a popular SQL toolkit and ORM for Python.
+`zoo` uses [SQLAlchemy 2.0](https://www.sqlalchemy.org/), an Object Relational Mapper (ORM), which means it provides
+a way to interact with databases using Python objects instead of raw SQL. SQLAlchemy 2.0
+is the latest version of SQLAlchemy, which includes support for async/await and the
+latest Python features such as type annotations.
+
+??? example "SQLAlchemy"
+
+    ```python
+    from typing import Optional
+
+    from sqlalchemy import ForeignKey
+    from sqlalchemy.orm import Mapped, mapped_column
+    from sqlalchemy.orm import declarative_base
+
+    Base = declarative_base()
+
+
+    class Hero(Base):
+        """
+        Heroes Database Model
+        """
+
+        __tablename__ = "heroes"
+
+        hero_id: Mapped[int] = mapped_column(primary_key=True)
+        name: Mapped[str]
+        powers: Mapped[Optional[str]] = mapped_column(default=None, nullable=True)
+        secret_identity_id: Mapped[Optional[int]] = mapped_column(ForeignKey("identities.identity_id"),
+                                                                  nullable=True, default=None)
+    ```
+
+### Data Models
+
+`zoo` uses [Pydantic v2](https://docs.pydantic.dev/latest/), a data validation and settings management library.
+Pydantic is used to define the data models for the API endpoints, as well as the
+interface between the API endpoints and the SQLAlchemy ORM models.
+
+??? example "Pydantic"
+
+    ```python
+    from typing import Optional
+
+    from pydantic import BaseModel
+
+
+    class HeroBase(BaseModel):
+        """
+        Hero Base Data Model
+        """
+
+        hero_id: int
+        name: str
+        powers: Optional[str] = None
+        secret_identity_id: Optional[int] = None
+    ```
+
+### API Authentication
+
+`zoo` leverages [fastapi-users](https://frankie567.github.io/fastapi-users/), a high-level library for
+building user authentication on top of FastAPI. fastapi-users provides a set of utilities
+for registering, authenticating, and managing users, as well as a set of endpoints for
+interacting with the user database.
 
 ### Database Migrations
 

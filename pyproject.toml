@@ -138,25 +138,14 @@ detached = false
 
 [tool.hatch.envs.gen.scripts]
 all = ["docs"]
-clients = ["py", "ts"]
 docs = ["openapi"]
 openapi = "python -m zoo openapi"
-py = [
-  "rm -rf ./dist/clients/python",
-  """
-        docker run --rm -v ./:/local openapitools/openapi-generator-cli generate \
-          -i /local/docs/openapi.json \
-          -g python \
-          -o /local/dist/clients/python
-        """
-]
 release = [
   "npm install --prefix .github/semantic_release/",
   "npx --prefix .github/semantic_release/ semantic-release {args:}"
 ]
 reqs = "pip-compile {args:} --generate-hashes --output-file requirements.txt"
 reqs-update = "compile --upgrade"
-ts = ["rm -rf ./dist/clients/ts", "npx openapi --input ./docs/openapi.json --output ./dist/clients/ts"]
 
 [tool.hatch.envs.lint]
 dependencies = [

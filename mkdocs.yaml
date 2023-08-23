@@ -5,8 +5,8 @@ nav:
     - index.md
     - Contributing 🤝: contributing.md
     - Infrastructure 🏗: infrastructure.md
-    - API Clients 💻: clients.md
     - OpenAPI Docs ✨: openapi.md
+    - Project Structure 📂: project_structure.md
 theme:
     favicon: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png
     logo: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png
@@ -29,6 +29,15 @@ theme:
           toggle:
               icon: material/weather-night
               name: Switch to light mode
+    icon:
+        admonition:
+            abstract: material/file-code
+            tip: material/fire
+            note: fontawesome/regular/note-sticky
+#      note: material/note
+#      note: fontawesome/regular/note-sticky
+#      info: fontawesome/solid/circle-info
+
 repo_url: https://github.com/juftin/zoo
 repo_name: zoo
 edit_uri: blob/main/docs/
@@ -40,7 +49,9 @@ extra:
 markdown_extensions:
     - toc:
           permalink: "#"
-    - pymdownx.snippets
+    - pymdownx.snippets:
+          base_path:
+              - !relative $config_dir
     - pymdownx.magiclink
     - attr_list
     - md_in_html
