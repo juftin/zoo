@@ -4,32 +4,35 @@
 
 !!! tip "pipx"
 
-    This documentaion uses [pipx](https://pipxproject.github.io/pipx/) to
+    This documentaion uses [pipx] to
     install and manage non-project command line tools like `hatch` and
     `pre-commit`. If you don't already have `pipx` installed, make sure to
-    see their [documentation](https://pipxproject.github.io/pipx/installation/).
+    see their [documentation](https://pypa.github.io/pipx/installation/).
     If you prefer not to use `pipx`, you can use `pip` instead.
 
-1. Install [hatch](https://hatch.pypa.io/latest/)
+1.  Install [hatch](https://hatch.pypa.io/latest/)
 
     ```shell
     pipx install hatch
     ```
 
-!!! note "pre-commit"
+    !!! note "pre-commit"
 
-    Hatch will attempt to set up pre-commit hooks for you using
-    [pre-commit](https://pre-commit.com/). If you don't already,
-    make sure to install pre-commit as well: `pipx install pre-commit`
+        Hatch will attempt to set up pre-commit hooks for you using
+        [pre-commit]. If you don't already,
+        make sure to install pre-commit as well: `pipx install pre-commit`
 
-2. Build the Virtual Environment
+2.  Build the Virtual Environment
+
     ```shell
     hatch env create
     ```
-3. `(Optional)` Link hatch's virtual environment to your IDE.
-   It's located in the `.venv` directory at the root of the project.
 
-4. Activate the Virtual Environment
+3.  If you need to, you can link hatch's virtual environment to your IDE.
+    It's located in the `.venv` directory at the root of the project.
+
+4.  Activate the Virtual Environment
+
     ```shell
     hatch shell
     ```
@@ -90,9 +93,88 @@ hatch run cov
 ```
 
 Since `cov` is in the default environment, we can run it without
-specifying the environment. However to run the `serve` command in the
+specifying the environment. However, to run the `serve` command in the
 `docs` environment, we need to specify the environment:
 
 ```bash
 hatch run docs:serve
 ```
+
+## Committing Code
+
+This project uses [pre-commit] to run a set of
+checks on the code before it is committed. The pre-commit hooks are
+installed by hatch automatically when you run it for the first time.
+
+This project uses [semantic-versioning] standards, managed by [semantic-release].
+Releases for this project are handled entirely by CI/CD via pull requests being
+merged into the `main` branch. Contributions follow the [gitmoji] standards
+with [conventional commits].
+
+While you can denote other changes on your commit messages with [gitmoji], the following
+commit message emoji prefixes are the only ones to trigger new releases:
+
+| Emoji | Shortcode     | Description                 | Semver |
+| ----- | ------------- | --------------------------- | ------ |
+| 💥    | \:boom\:      | Introduce breaking changes. | Major  |
+| ✨    | \:sparkles\:  | Introduce new features.     | Minor  |
+| 🐛    | \:bug\:       | Fix a bug.                  | Patch  |
+| 🚑    | \:ambulance\: | Critical hotfix.            | Patch  |
+| 🔒    | \:lock\:      | Fix security issues.        | Patch  |
+
+Most features can be squash merged into a single commit on a pull-request.
+When merging multiple commits, they will be summarized into a single release.
+
+If you're working on a new feature, your commit message might look like:
+
+```text
+✨ New Feature Description
+```
+
+Bug fix commits would look like this:
+
+```text
+🐛 Bug Fix Description
+```
+
+If you're working on a feature that introduces breaking changes, your
+commit message might look like:
+
+```text
+💥 Breaking Change Description
+```
+
+Other commits that don't trigger a release, but get included in the
+release notes might look like:
+
+```text
+📝 Documentation Update Description
+👷 CI/CD Update Description
+🧪 Testing Changes Description
+🚚 Moving/Renaming Description
+⬆️ Dependency Upgrade Description
+```
+
+### Pre-Releases
+
+[semantic-release] supports pre-releases. To trigger a pre-release, you
+would merge your pull request into an `alpha` or `beta` branch.
+
+### Specific Release Versions
+
+In some cases you need more advanced control around what kind of release you
+need to create. If you need to release a specific version, you can do so by creating a
+new branch with the version number as the branch name. For example, if the
+current version is `2.3.2`, but you need to release a fix as `1.2.5`, you
+would create a branch named `1.2.x` and merge your changes into that branch.
+
+See the [semantic-release documentation] for more information about
+branch based releases and other advanced release cases.
+
+[pipx]: https://pypa.github.io/pipx/
+[pre-commit]: https://pre-commit.com/
+[gitmoji]: https://gitmoji.dev/
+[conventional commits]: https://www.conventionalcommits.org/en/v1.0.0/
+[semantic-release]: https://github.com/semantic-release/semantic-release
+[semantic-versioning]: https://semver.org/
+[semantic-release documentation]: https://semantic-release.gitbook.io/semantic-release/usage/configuration#branches

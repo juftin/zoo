@@ -5,8 +5,8 @@ nav:
     - index.md
     - Contributing 🤝: contributing.md
     - Infrastructure 🏗: infrastructure.md
-    - OpenAPI Docs ✨: openapi.md
     - Project Structure 📂: project_structure.md
+    - OpenAPI Docs ✨: openapi.md
 theme:
     favicon: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png
     logo: https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png

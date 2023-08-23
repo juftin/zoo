@@ -3,7 +3,7 @@
   "info": {
     "title": "zoo",
     "description": "### An asynchronous zoo API, powered by FastAPI, SQLAlchemy 2.0, Pydantic v2, and Alembic\n\n[<img src=\"https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png\" width=\"120\" height=\"120\"  alt=\"juftin logo\">](https://juftin.com)",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "paths": {
     "/health": {
