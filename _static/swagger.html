@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="SwaggerUI" />
+        <meta name="author" content="Justin Flannery" />
+        <link
+            rel="icon"
+            href="https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png"
+        />
+        <title>zoo - Swagger UI</title>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css"
+        />
+    </head>
+    <body>
+        <div id="swagger-ui"></div>
+        <script
+            src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"
+            crossorigin
+        ></script>
+        <script>
+            const DisableTryItOutPlugin = function () {
+                return {
+                    statePlugins: {
+                        spec: {
+                            wrapSelectors: {
+                                allowTryItOutFor: () => () => false,
+                            },
+                        },
+                    },
+                };
+            };
+
+            const ui = SwaggerUIBundle({
+                url: "/openapi.json",
+                dom_id: "#swagger-ui",
+                layout: "BaseLayout",
+                deepLinking: true,
+                showExtensions: true,
+                showCommonExtensions: true,
+                oauth2RedirectUrl: window.location.origin + "/docs/oauth2-redirect",
+                plugins: [SwaggerUIBundle.plugins.DownloadUrl, DisableTryItOutPlugin],
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIBundle.SwaggerUIStandalonePreset,
+                ],
+            });
+
+            window.onload = function () {
+                window.ui = ui;
+            };
+        </script>
+    </body>
+</html>
