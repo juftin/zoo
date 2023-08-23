@@ -4,7 +4,7 @@ Application Info
 
 from textwrap import dedent
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __application__ = "zoo"
 __description__ = (
     "An asynchronous zoo API, powered by FastAPI, SQLAlchemy 2.0, Pydantic v2, and Alembic"
