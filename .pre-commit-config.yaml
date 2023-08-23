@@ -29,7 +29,8 @@ repos:
             exclude: |
                 (?x)(
                   .github/semantic_release/release_notes.hbs|
-                  docs/openapi.json
+                  docs/openapi.json|
+                  docs/project_structure.md
                 )
             additional_dependencies:
                 - prettier

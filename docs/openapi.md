@@ -2,7 +2,8 @@
 
 ## Interactive Docs
 
-Interactive Swagger docs are available via `/docs` endpoint.
+Interactive Swagger docs are available via `/docs` endpoint of the
+ASGI application.
 
 ```shel
 hatch run app:serve

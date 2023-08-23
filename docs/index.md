@@ -15,5 +15,5 @@ and [Alembic](https://alembic.sqlalchemy.org/en/latest/).
 
 -   [Infrastructure :building_construction:](infrastructure.md)
 -   [Contributing :handshake:](contributing.md)
--   [API Clients :computer:](clients.md)
+-   [Project Structure :file_folder:](project_structure.md)
 -   [OpenAPI Docs :sparkles:](openapi.md)
