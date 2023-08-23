@@ -3,7 +3,7 @@
   "info": {
     "title": "zoo",
     "description": "### An asynchronous zoo API, powered by FastAPI, SQLAlchemy 2.0, Pydantic v2, and Alembic\n\n[<img src=\"https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png\" width=\"120\" height=\"120\"  alt=\"juftin logo\">](https://juftin.com)",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "paths": {
     "/health": {
@@ -1241,9 +1241,9 @@
             "description": "Ferocious kitty",
             "exhibit_id": 1,
             "id": 1,
-            "modified_at": "2021-01-02T09:12:34.567890",
             "name": "Lion",
-            "species": "Panthera leo"
+            "species": "Panthera leo",
+            "updated_at": "2021-01-02T09:12:34.567890"
           }
         ]
       },
@@ -1472,8 +1472,8 @@
             "description": "A big cat exhibit",
             "id": 1,
             "location": "North America",
-            "modified_at": "2021-01-02T09:12:34.567890",
-            "name": "Big Cat Exhibit"
+            "name": "Big Cat Exhibit",
+            "updated_at": "2021-01-02T09:12:34.567890"
           }
         ]
       },
@@ -1774,10 +1774,10 @@
             "exhibit_id": 1,
             "id": 1,
             "job_title": "Zookeeper",
-            "modified_at": "2021-01-02T09:12:34.567890",
             "name": "John Doe",
             "notes": "John Doe is a great zookeeper and loves cats!",
-            "phone": "555-555-5555"
+            "phone": "555-555-5555",
+            "updated_at": "2021-01-02T09:12:34.567890"
           }
         ]
       },
