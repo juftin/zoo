@@ -13,6 +13,7 @@ from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from zoo.config import app_config
+from zoo.models import User
 from zoo.models.animals import Animals
 from zoo.models.exhibits import Exhibits
 from zoo.models.staff import Staff
@@ -82,6 +83,16 @@ animals = [
     ),
 ]
 
+users = [
+    User(
+        email="test@testing.com",
+        hashed_password="$2b$12$NFdfW9qJibNM3FcNPhKbcuop9ABk0IBPWohbTD/nsAC7qRaTdx5hu",
+        is_active=True,
+        is_superuser=False,
+        is_verified=False,
+    )
+]
+
 
 def upgrade() -> None:
     """
@@ -98,6 +109,8 @@ def upgrade() -> None:
             session.add(staff_member)
         for animal in animals:
             session.add(animal)
+        for user in users:
+            session.add(user)
     session.commit()
 
 

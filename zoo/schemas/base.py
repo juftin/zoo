@@ -18,7 +18,7 @@ class ZooModel(BaseModel):
     __openapi_db_fields__: ClassVar[Dict[str, Any]] = {
         "id": 1,
         "created_at": "2021-01-01T00:00:00.000000",
-        "modified_at": "2021-01-02T09:12:34.567890",
+        "updated_at": "2021-01-02T09:12:34.567890",
         "deleted_at": None,
     }
 
@@ -57,7 +57,8 @@ class ZooModel(BaseModel):
         if not cls.__example__:
             error_msg = "Example not implemented"
             raise NotImplementedError(error_msg)
-        half_example_keys = list(cls.__example__.keys())[: len(cls.__example__) // 2]
+        keys_to_use = max(len(cls.__example__.keys()) // 2, 1)
+        half_example_keys = list(cls.__example__.keys())[:keys_to_use]
         half_example = {key: cls.__example__[key] for key in half_example_keys}
         return {"examples": [half_example]}
 
@@ -67,7 +68,8 @@ class ZooModel(BaseModel):
         Get the openapi delete example
         """
         read_example = cls.get_openapi_read_example()
-        read_example["deleted_at"] = "2021-01-02T09:12:34.567890"
+        for i in range(len(read_example["examples"])):
+            read_example["examples"][i]["deleted_at"] = "2021-01-02T09:12:34.567890"
         return read_example
 
 

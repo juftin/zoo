@@ -2,7 +2,6 @@
 User Database Model
 """
 
-import asyncio
 import contextlib
 import uuid
 from typing import AsyncGenerator
@@ -147,7 +146,7 @@ async def create_user(email: str, password: str, *, is_superuser: bool = False) 
     UserAlreadyExists
         If the user already exists
     """
-    async with get_async_session_context() as session:
+    async with get_async_session_context() as session:  # pragma: no cover
         async with get_user_db_context(session) as user_db:
             async with get_user_manager_context(user_db) as user_manager:
                 user = await user_manager.create(
@@ -187,13 +186,3 @@ def bootstrap_fastapi_users(app: FastAPI) -> None:
     # - fastapi_users.get_reset_password_router()
     # - fastapi_users.get_verify_router(UserRead)
     # - fastapi_users.get_users_router(UserRead, UserUpdate)
-
-
-if __name__ == "__main__":
-    asyncio.run(
-        create_user(
-            email="admin@test.com",
-            password="admin",
-            is_superuser=True,
-        )
-    )

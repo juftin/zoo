@@ -1,6 +1,6 @@
 <div style="text-align: center;">
   <p style="margin-bottom: 0;" align="center">
-    <img src="https://i.imgur.com/EBsFZfD.png" width="400">
+    <img src="https://i.imgur.com/Gdbh2Dj.png" width="400">
   </p>
   <p style="font-size: 36px; margin-top: 0;" align="center">
     ZOO

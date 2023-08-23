@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from zoo.models.base import Base, CreatedUpdatedMixin, DeletedAtMixin, IDMixin
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from zoo.models.animals import Animals
     from zoo.models.staff import Staff
 

@@ -60,15 +60,18 @@ zoo = ["zoo", "*/zoo/zoo"]
 
 [tool.coverage.report]
 exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:"
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:"
 ]
+show_missing = true
 
 [tool.coverage.run]
 branch = true
 omit = [
-  "zoo/__init__.py"
+  "zoo/__init__.py",
+  "zoo/__main__.py",
+  "migrations/**"
 ]
 parallel = true
 source_pkgs = ["zoo"]
@@ -91,9 +94,9 @@ serve = [
 
 [tool.hatch.envs.default]
 dependencies = [
+  "black~=23.7.0",
   "coverage[toml]>=6.5",
-  "pytest",
-  "black~=23.7.0"
+  "pytest"
 ]
 path = ".venv"
 post-install-commands = [

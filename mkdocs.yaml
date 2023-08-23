@@ -34,10 +34,6 @@ theme:
             abstract: material/file-code
             tip: material/fire
             note: fontawesome/regular/note-sticky
-#      note: material/note
-#      note: fontawesome/regular/note-sticky
-#      info: fontawesome/solid/circle-info
-
 repo_url: https://github.com/juftin/zoo
 repo_name: zoo
 edit_uri: blob/main/docs/
