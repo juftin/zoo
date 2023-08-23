@@ -7,6 +7,9 @@ on:
 jobs:
     lint:
         runs-on: ubuntu-latest
+        concurrency:
+            group: ${{ github.workflow }}-${{ matrix.python }}-${{ github.ref }}
+            cancel-in-progress: true
         steps:
             - name: Set up Github Workspace
               uses: actions/checkout@v3
