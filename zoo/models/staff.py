@@ -26,6 +26,8 @@ class Staff(Base, IDMixin, DeletedAtMixin, CreatedUpdatedMixin):
     email: Mapped[str] = mapped_column(default=None, nullable=True)
     phone: Mapped[str] = mapped_column(default=None, nullable=True)
     notes: Mapped[str] = mapped_column(default=None, nullable=True)
-    exhibit_id: Mapped[int] = mapped_column(ForeignKey("exhibits.id"), nullable=True, default=None)
+    exhibit_id: Mapped[int] = mapped_column(
+        ForeignKey("exhibits.id"), nullable=True, default=None
+    )
 
     exhibit: Mapped["Exhibits"] = relationship(back_populates="staff")

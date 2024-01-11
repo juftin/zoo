@@ -7,7 +7,7 @@ import logging
 from zoo.config import ZooSettings
 
 
-def test_rich_logging():
+def test_rich_logging() -> None:
     """
     Test rich logging
     """
@@ -17,7 +17,7 @@ def test_rich_logging():
     assert len(logger.handlers) == 1
 
 
-def test_rich_logging_string():
+def test_rich_logging_string() -> None:
     """
     Test rich logging with string
     """

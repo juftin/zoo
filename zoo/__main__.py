@@ -65,7 +65,12 @@ def openapi(context: ZooContext) -> None:
 @cli.command()
 @click.option("-e", "--email", help="User email to create", type=str, required=True)
 @click.option(
-    "-p", "--password", default="admin", help="Password to create", type=str, required=True
+    "-p",
+    "--password",
+    default="admin",
+    help="Password to create",
+    type=click.STRING,
+    required=True,
 )
 @click.pass_context
 def users(context: Context, email: str, password: str) -> None:

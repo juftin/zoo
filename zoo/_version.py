@@ -7,7 +7,8 @@ from textwrap import dedent
 __version__ = "0.2.0"
 __application__ = "zoo"
 __description__ = (
-    "An asynchronous zoo API, powered by FastAPI, SQLAlchemy 2.0, Pydantic v2, and Alembic"
+    "An asynchronous zoo API, powered by FastAPI, "
+    "SQLAlchemy 2.0, Pydantic v2, and Alembic"
 )
 __favicon__ = "https://raw.githubusercontent.com/juftin/juftin/main/static/juftin.png"
 

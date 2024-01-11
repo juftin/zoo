@@ -35,7 +35,7 @@ async def get_exhibits(
     """
     result = await session.execute(
         select(Exhibits)
-        .where(Exhibits.deleted_at.is_(None))  # type: ignore[union-attr]
+        .where(Exhibits.deleted_at.is_(None))
         .order_by(Exhibits.id)
         .offset(offset)
         .limit(limit)
@@ -94,13 +94,17 @@ async def delete_exhibit(
 
 @exhibits_router.patch("/exhibits/{exhibit_id}", response_model=ExhibitsRead)
 async def update_exhibit(
-    exhibit_id: int, exhibit: ExhibitsUpdate, session: AsyncSession = Depends(get_async_session)
+    exhibit_id: int,
+    exhibit: ExhibitsUpdate,
+    session: AsyncSession = Depends(get_async_session),
 ) -> ExhibitsRead:
     """
     Update exhibit from the database
     """
     db_exhibit: Optional[Exhibits] = await session.get(Exhibits, exhibit_id)
-    db_exhibit = check_model(model_instance=db_exhibit, model_class=Exhibits, id=exhibit_id)
+    db_exhibit = check_model(
+        model_instance=db_exhibit, model_class=Exhibits, id=exhibit_id
+    )
     for field, value in exhibit.model_dump(exclude_unset=True).items():
         setattr(db_exhibit, field, value)
     session.add(db_exhibit)
@@ -122,7 +126,9 @@ async def get_exhibit_animals(
         entity=Exhibits,
         ident=exhibit_id,
         options=[
-            joinedload(Exhibits.animals)  # explicit load of relationship supports async session
+            joinedload(
+                Exhibits.animals
+            )  # explicit load of relationship supports async session
         ],
     )
     exhibit = check_model(model_instance=exhibit, model_class=Exhibits, id=exhibit_id)

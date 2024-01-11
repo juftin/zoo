@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from zoo.schemas.animals import AnimalsBase, AnimalsRead
 
 
-def test_animal_base_success():
+def test_animal_base_success() -> None:
     """
     AnimalBase - successful validation
     """
@@ -19,7 +19,7 @@ def test_animal_base_success():
     assert animal.species == "test"
 
 
-def test_animal_base_failure():
+def test_animal_base_failure() -> None:
     """
     AnimalBase - Validation error
     """
@@ -27,7 +27,7 @@ def test_animal_base_failure():
         AnimalsBase()
 
 
-def test_animal_base_validation():
+def test_animal_base_validation() -> None:
     """
     AnimalBase - Validation error
     """
@@ -35,7 +35,7 @@ def test_animal_base_validation():
         AnimalsBase(name="test", description="test", species="test", exhibit_id="test")
 
 
-def test_animal_read_success():
+def test_animal_read_success() -> None:
     """
     AnimalRead - successful validation
     """
@@ -52,10 +52,12 @@ def test_animal_read_success():
     assert animal.description == "test"
     assert animal.species == "test"
     assert animal.exhibit_id == 1
-    assert animal.updated_at == datetime.datetime(2021, 1, 1, 0, 0, tzinfo=datetime.timezone.utc)
+    assert animal.updated_at == datetime.datetime(
+        2021, 1, 1, 0, 0, tzinfo=datetime.timezone.utc
+    )
 
 
-def test_animal_read_failure():
+def test_animal_read_failure() -> None:
     """
     AnimalRead - Validation error
     """
