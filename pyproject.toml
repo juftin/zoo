@@ -4,34 +4,38 @@ requires = ["hatchling"]
 
 [project]
 authors = [
-  {name = "juftin", email = "juftin@juftin.com"}
+  {name = "Justin Flannery", email = "juftin@juftin.com"}
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
+  "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy"
 ]
 dependencies = [
   "fastapi~=0.100.1",
-  "fastapi-users[sqlalchemy]~=12.1.1",
+  "fastapi-users[sqlalchemy]~=12.1.2",
   "pydantic[email]==2.1.1",
   "pydantic-settings~=2.0.3",
   "pydantic-extra-types~=2.0.0",
   "sqlalchemy[asyncio]~=2.0.20",
   "aiosqlite~=0.19.0",
   "asyncpg~=0.28.0",
-  "greenlet~=2.0.2",
+  "greenlet~=3.0.3",
   "uvicorn[standard]~=0.23.2",
   "gunicorn~=21.2.0",
   "alembic~=1.11.2",
   "httpx~=0.24.1",
   "rich~=13.5.2",
-  "click~=8.1.7"
+  "click~=8.1.7",
+  # https://github.com/fastapi-users/fastapi-users/issues/1301
+  "setuptools; python_version == '3.12'"
 ]
 description = "An asynchronous zoo API, powered by FastAPI and SQLModel"
 dynamic = ["version"]
@@ -50,19 +54,15 @@ Documentation = "https://github.com/juftin/zoo#readme"
 Issues = "https://github.com/juftin/zoo/issues"
 Source = "https://github.com/juftin/zoo"
 
-[tool.black]
-line-length = 100
-target-version = ["py37"]
-
 [tool.coverage.paths]
 tests = ["tests", "*/zoo/tests"]
 zoo = ["zoo", "*/zoo/zoo"]
 
 [tool.coverage.report]
 exclude_lines = [
-  "pragma: no cover",
-  "if TYPE_CHECKING:",
-  "if __name__ == .__main__.:"
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:"
 ]
 show_missing = true
 
@@ -74,10 +74,26 @@ omit = [
   "migrations/**"
 ]
 parallel = true
-source_pkgs = ["zoo"]
+source_pkgs = ["zoo", "tests"]
+
+[tool.hatch.env]
+requires = ["hatch-pip-compile", "hatch-mkdocs"]
+
+[tool.hatch.env.collectors.mkdocs.docs]
+path = "mkdocs.yaml"
+
+[tool.hatch.envs.all]
+pip-compile-args = [
+  "--allow-unsafe"
+]
+pip-compile-constraint = ""
+template = "test"
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.all.scripts]
+migrate = "alembic upgrade head"
 
 [tool.hatch.envs.app]
 detached = false
@@ -93,50 +109,23 @@ serve = [
 ]
 
 [tool.hatch.envs.default]
-dependencies = [
-  "black~=23.7.0",
-  "coverage[toml]>=6.5",
-  "pytest"
-]
-path = ".venv"
+pip-compile-constraint = "default"
 post-install-commands = [
-  "pre-commit install"
+  "- pre-commit install"
 ]
-pre-install-commands = [
-  "pip install -q -r requirements.txt --no-deps"
-]
-type = "virtual"
+type = "pip-compile"
 
 [tool.hatch.envs.default.scripts]
-cov = [
-  "test-cov",
-  "cov-report"
-]
-cov-report = [
-  "- coverage combine",
-  "coverage report"
-]
-test = "pytest {args:tests}"
-test-cov = "coverage run -m pytest {args:tests}"
+cov = "hatch run test:cov"
+test = "hatch run test:test"
 
 [tool.hatch.envs.docs]
-dependencies = [
-  "mkdocs~=1.5.2",
-  "mkdocs-material~=9.2.3",
-  "mkdocstrings~=0.22.0",
-  "markdown-exec[ansi]~=1.6.0"
-]
-detached = true
-
-[tool.hatch.envs.docs.scripts]
-build = ["hatch run gen:docs", "mkdocs build --clean --strict"]
-deploy = ["hatch run gen:docs", "mkdocs gh-deploy {args:}"]
-serve = ["hatch run gen:docs", "mkdocs serve --dev-addr localhost:8080 --livereload"]
+detached = false
+pip-compile-constraint = "default"
+template = "docs"
+type = "pip-compile"
 
 [tool.hatch.envs.gen]
-dependencies = [
-  "pip-tools~=7.1.0"
-]
 detached = false
 
 [tool.hatch.envs.gen.scripts]
@@ -147,23 +136,22 @@ release = [
   "npm install --prefix .github/semantic_release/",
   "npx --prefix .github/semantic_release/ semantic-release {args:}"
 ]
-reqs = "pip-compile {args:} --generate-hashes --output-file requirements.txt"
-reqs-update = "compile --upgrade"
 
 [tool.hatch.envs.lint]
 dependencies = [
-  "mypy~=1.4.1",
-  "ruff~=0.0.281"
+  "mypy>=1.6.1",
+  "ruff~=0.1.7"
 ]
-detached = false
+detached = true
+type = "pip-compile"
 
 [tool.hatch.envs.lint.scripts]
 all = [
-  "fmt",
+  "style",
   "typing"
 ]
 fmt = [
-  "black {args:.}",
+  "ruff format {args:.}",
   "ruff --fix {args:.}",
   "style"
 ]
@@ -172,25 +160,35 @@ precommit = [
 ]
 style = [
   "ruff {args:.}",
-  "black --check --diff {args:.}"
+  "ruff format --check --diff {args:.}"
 ]
 typing = "mypy --install-types --non-interactive {args:zoo tests migrations}"
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pytest",
+  "pytest-cov"
+]
+
+[tool.hatch.envs.test.scripts]
+cov = "pytest --cov --cov-config=pyproject.toml {args:tests}"
+test = "pytest {args:tests}"
 
 [tool.hatch.version]
 path = "zoo/_version.py"
 
-[[tool.mypy.overrides]]
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_untyped_defs = true
+follow_imports = "silent"
 ignore_missing_imports = true
-module = [
-  "pytest.*"
-]
+no_implicit_reexport = true
+warn_redundant_casts = true
+warn_unused_ignores = true
 
 [tool.ruff]
 ignore = [
-  # Allow non-abstract empty methods in abstract base classes
-  "B027",
-  # Allow boolean positional values in function calls, like `dict.get(... True)`
-  "FBT003",
   # Ignore checks for possible passwords
   "S105",
   "S106",
@@ -201,44 +199,48 @@ ignore = [
   "PLR0912",
   "PLR0913",
   "PLR0915",
+  # Boolean-typed positional argument in function definition
+  "FBT001",
+  # Boolean default positional argument in function definition
+  "FBT002",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT003",
+  # Exception must not use a string literal, assign to variable first
+  "EM101",
   # Ignore Depends on FastAPI
   "B008"
 ]
-line-length = 120
+line-length = 88
 select = [
-  "A",
-  "ARG",
-  "B",
-  "C",
-  "DTZ",
-  "E",
-  "EM",
-  "F",
-  "FBT",
-  "I",
-  "ICN",
-  "ISC",
-  "N",
-  "PLC",
-  "PLE",
-  "PLR",
-  "PLW",
-  "Q",
-  "RUF",
-  "S",
-  "T",
-  "TID",
-  "UP",
-  "W",
-  "YTT"
+  "A",  # flake8-builtins
+  "ARG",  # flake8-unused-arguments
+  "B",  # flake8-bugbear
+  "C",  # mccabe
+  "DTZ",  # flake8-datetimez
+  "E",  # pycodestyle (Error)
+  "EM",  # flake8-errmsg
+  "F",  # Pyflakes
+  "FBT",  # flake8-boolean-trap
+  "I",  # isort
+  "ICN",  # flake8-import-conventions
+  "N",  # pep8-naming
+  "PLC",  # Pylint (Convention message)
+  "PLE",  # Pylint (Error message)
+  "PLR",  # Pylint (Refactor message)
+  "PLW",  # Pylint (Warning message)
+  "Q",  # flake8-quotes
+  "RUF",  # Ruff-specific rules
+  "S",  # flake8-bandit
+  "T",  # flake8-debugger (T10) and flake8-print (T20)
+  "TID",  # flake8-tidy-imports
+  "UP",  # pyupgrade
+  "W",  # pycodestyle (Warning)
+  "YTT"  # flake8-2020
 ]
 target-version = "py38"
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "all"
-
-[tool.ruff.flake8-unused-arguments]
-ignore-variadic-names = true  # *args, **kwargs
 
 [tool.ruff.isort]
 known-first-party = ["zoo"]

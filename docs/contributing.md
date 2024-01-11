@@ -41,20 +41,24 @@
 
 ### Hatch Cheat Sheet
 
-| Command Description               | Command                     | Notes                                                      |
-| --------------------------------- | --------------------------- | ---------------------------------------------------------- |
-| Run Tests                         | `hatch run cov`             | Runs tests with `pytest` and `coverage`                    |
-| Run Formatting                    | `hatch run lint:fmt`        | Runs `black` and `ruff` code formatters                    |
-| Run Linting                       | `hatch run lint:all`        | Runs `ruff` and `mypy` linters / type checkers             |
-| Generate OpenAPI Spec and Clients | `hatch run gen:all`         |                                                            |
-| Update Requirements Lock Files    | `hatch run gen:reqs`        | Updating lock file using `pip-compile`                     |
-| Upgrade Dependencies              | `hatch run gen:reqs-update` | Updating lock file using `pip-compile` and `--update` flag |
-| Serve the Documentation           | `hatch run docs:serve`      | Serve the documentation using MkDocs                       |
-| Run the Application Locally       | `hatch run app:serve`       | Serve the app with uvicorn using a SQLite Database         |
-| Run the Application in Docker     | `hatch run app:container`   | Serve the app using a docker compose stack                 |
-| Run the `pre-commit` Hooks        | `hatch run lint:precommit`  | Runs the `pre-commit` hooks on all files                   |
+| Command Description               | Command                    | Notes                                              |
+| --------------------------------- | -------------------------- | -------------------------------------------------- |
+| Run Tests                         | `hatch run cov`            | Runs tests with `pytest` and `coverage`            |
+| Run Formatting                    | `hatch run lint:fmt`       | Runs `black` and `ruff` code formatters            |
+| Run Linting                       | `hatch run lint:all`       | Runs `ruff` and `mypy` linters / type checkers     |
+| Generate OpenAPI Spec and Clients | `hatch run gen:all`        |                                                    |
+| Serve the Documentation           | `hatch run docs:serve`     | Serve the documentation using MkDocs               |
+| Run the Application Locally       | `hatch run app:serve`      | Serve the app with uvicorn using a SQLite Database |
+| Run the Application in Docker     | `hatch run app:container`  | Serve the app using a docker compose stack         |
+| Run the `pre-commit` Hooks        | `hatch run lint:precommit` | Runs the `pre-commit` hooks on all files           |
 
 ### Hatch Explanation
+
+Hatch is a Python package manager. Its most basic use is as a standardized build-system.
+However, hatch also has some extra features which this project takes advantage of.
+These features include virtual environment management and the organization of common
+scripts like linting and testing. All the operations in hatch take place in one
+of its managed virtual environments.
 
 Hatch has a variety of environments, to see them simply ask hatch:
 
@@ -62,7 +66,7 @@ Hatch has a variety of environments, to see them simply ask hatch:
 hatch env show
 ```
 
-That above command will tell you that there are five environments that
+That above command will tell you that there are six environments that
 you can use:
 
 -   `default`
@@ -70,20 +74,19 @@ you can use:
 -   `docs`
 -   `gen`
 -   `lint`
+-   `test`
 
 Each of these environments has a set of commands that you can run.
 To see the commands for a specific environment, run:
 
 ```bash exec="on" result="markdown" source="tabbed-left" tabs="hatch CLI|Output"
-hatch env show docs
+hatch env show default
 ```
 
 Here we can see that the `default` environment has the following commands:
 
 -   `cov`
--   `cov-report`
 -   `test`
--   `test-cov`
 
 The one that we're interested in is `cov`, which will run the tests
 for the project.
@@ -98,6 +101,12 @@ specifying the environment. However, to run the `serve` command in the
 
 ```bash
 hatch run docs:serve
+```
+
+You can see what scripts are available using the `env show` command
+
+```bash exec="on" result="markdown" source="tabbed-left" tabs="hatch CLI|Output"
+hatch env show docs
 ```
 
 ## Committing Code
@@ -144,8 +153,7 @@ commit message might look like:
 💥 Breaking Change Description
 ```
 
-Other commits that don't trigger a release, but get included in the
-release notes might look like:
+Other commits that don't trigger a release might look like this:
 
 ```text
 📝 Documentation Update Description

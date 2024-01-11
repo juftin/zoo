@@ -20,9 +20,15 @@ class StaffBase(ZooModel):
     """
 
     name: str = Field(description="The name of the staff")
-    job_title: Optional[str] = Field(default=None, description="The job title of the staff")
-    email: Optional[EmailStr] = Field(default=None, description="The email of the staff")
-    phone: Optional[str] = Field(default=None, description="The phone number of the staff")
+    job_title: Optional[str] = Field(
+        default=None, description="The job title of the staff"
+    )
+    email: Optional[EmailStr] = Field(
+        default=None, description="The email of the staff"
+    )
+    phone: Optional[str] = Field(
+        default=None, description="The phone number of the staff"
+    )
     notes: Optional[str] = Field(
         default=None, description="Optional notes regarding the staff member"
     )
@@ -67,9 +73,15 @@ class StaffUpdate(ZooModel):
     """
 
     name: Optional[str] = Field(default=None, description="The name of the staff")
-    job_title: Optional[str] = Field(default=None, description="The job title of the staff")
-    email: Optional[EmailStr] = Field(default=None, description="The email of the staff")
-    phone: Optional[str] = Field(default=None, description="The phone number of the staff")
+    job_title: Optional[str] = Field(
+        default=None, description="The job title of the staff"
+    )
+    email: Optional[EmailStr] = Field(
+        default=None, description="The email of the staff"
+    )
+    phone: Optional[str] = Field(
+        default=None, description="The phone number of the staff"
+    )
     notes: Optional[str] = Field(
         default=None, description="Optional notes regarding the staff member"
     )
