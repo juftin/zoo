@@ -20,8 +20,12 @@ class ExhibitsBase(ZooModel):
     """
 
     name: str = Field(description="The name of the exhibit")
-    description: Optional[str] = Field(default=None, description="The description of the exhibit")
-    location: Optional[str] = Field(default=None, description="The location of the exhibit")
+    description: Optional[str] = Field(
+        default=None, description="The description of the exhibit"
+    )
+    location: Optional[str] = Field(
+        default=None, description="The location of the exhibit"
+    )
 
     __example__: ClassVar[Dict[str, Any]] = {
         "name": "Big Cat Exhibit",
@@ -35,7 +39,9 @@ class ExhibitsCreate(ExhibitsBase):
     Exhibits model: create
     """
 
-    model_config = ConfigDict(json_schema_extra=ExhibitsBase.get_openapi_create_example())
+    model_config = ConfigDict(
+        json_schema_extra=ExhibitsBase.get_openapi_create_example()
+    )
 
 
 class ExhibitsRead(
@@ -59,7 +65,13 @@ class ExhibitsUpdate(ZooModel):
     """
 
     name: Optional[str] = Field(default=None, description="The name of the exhibit")
-    description: Optional[str] = Field(default=None, description="The description of the exhibit")
-    location: Optional[str] = Field(default=None, description="The location of the exhibit")
+    description: Optional[str] = Field(
+        default=None, description="The description of the exhibit"
+    )
+    location: Optional[str] = Field(
+        default=None, description="The location of the exhibit"
+    )
 
-    model_config = ConfigDict(json_schema_extra=ExhibitsBase.get_openapi_update_example())
+    model_config = ConfigDict(
+        json_schema_extra=ExhibitsBase.get_openapi_update_example()
+    )

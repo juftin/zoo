@@ -20,8 +20,12 @@ class AnimalsBase(ZooModel):
     """
 
     name: str = Field(description="The name of the animal")
-    description: Optional[str] = Field(default=None, description="The description of the animal")
-    species: Optional[str] = Field(default=None, description="The species of the animal")
+    description: Optional[str] = Field(
+        default=None, description="The description of the animal"
+    )
+    species: Optional[str] = Field(
+        default=None, description="The species of the animal"
+    )
 
     exhibit_id: Optional[int] = Field(description="The id of the exhibit", default=None)
 
@@ -38,7 +42,9 @@ class AnimalsCreate(AnimalsBase):
     Animals model: create
     """
 
-    model_config = ConfigDict(json_schema_extra=AnimalsBase.get_openapi_create_example())
+    model_config = ConfigDict(
+        json_schema_extra=AnimalsBase.get_openapi_create_example()
+    )
 
 
 class AnimalsRead(
@@ -63,8 +69,14 @@ class AnimalsUpdate(ZooModel):
     """
 
     name: Optional[str] = Field(default=None, description="The name of the animal")
-    description: Optional[str] = Field(default=None, description="The description of the animal")
-    species: Optional[str] = Field(default=None, description="The species of the animal")
+    description: Optional[str] = Field(
+        default=None, description="The description of the animal"
+    )
+    species: Optional[str] = Field(
+        default=None, description="The species of the animal"
+    )
     exhibit_id: Optional[int] = Field(description="The id of the exhibit", default=None)
 
-    model_config = ConfigDict(json_schema_extra=AnimalsBase.get_openapi_update_example())
+    model_config = ConfigDict(
+        json_schema_extra=AnimalsBase.get_openapi_update_example()
+    )

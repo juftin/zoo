@@ -25,10 +25,24 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 exhibits = [
-    Exhibits(name="Big Cat Exhibit", description="A big cat exhibit", location="North America"),
-    Exhibits(name="Bird Exhibit", description="A bird exhibit", location="North America"),
-    Exhibits(name="Reptile Exhibit", description="A reptile exhibit", location="North America"),
-    Exhibits(name="Aquatic Exhibit", description="An aquatic exhibit", location="North America"),
+    Exhibits(
+        name="Big Cat Exhibit",
+        description="A big cat exhibit",
+        location="North America",
+    ),
+    Exhibits(
+        name="Bird Exhibit", description="A bird exhibit", location="North America"
+    ),
+    Exhibits(
+        name="Reptile Exhibit",
+        description="A reptile exhibit",
+        location="North America",
+    ),
+    Exhibits(
+        name="Aquatic Exhibit",
+        description="An aquatic exhibit",
+        location="North America",
+    ),
 ]
 
 staff_members = [
@@ -120,13 +134,15 @@ def downgrade() -> None:
     """
     if app_config.SEED_DATA is False:
         return
-    animal_delete = delete(Animals).where(Animals.name.in_([animal.name for animal in animals]))
+    animal_delete = delete(Animals).where(
+        Animals.name.in_([animal.name for animal in animals])
+    )
     staff_delete = delete(Staff).where(
         Staff.name.in_([staff_member.name for staff_member in staff_members])
     )
     exhibit_delete = delete(Exhibits).where(
         Exhibits.name.in_([exhibit.name for exhibit in exhibits])
     )
-    op.execute(animal_delete)  # type: ignore[arg-type]
-    op.execute(staff_delete)  # type: ignore[arg-type]
-    op.execute(exhibit_delete)  # type: ignore[arg-type]
+    op.execute(animal_delete)
+    op.execute(staff_delete)
+    op.execute(exhibit_delete)

@@ -39,7 +39,9 @@ def test_get_exhibit_failure(migrated_client: TestClient) -> None:
     """
     response = migrated_client.get("/exhibits/100")
     assert response.status_code == 404
-    assert response.json() == {"detail": "Error: `Exhibits` data not found or deleted - ID: 100"}
+    assert response.json() == {
+        "detail": "Error: `Exhibits` data not found or deleted - ID: 100"
+    }
 
 
 def test_create_exhibit(migrated_client: TestClient) -> None:

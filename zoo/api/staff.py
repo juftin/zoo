@@ -30,7 +30,7 @@ async def get_staff_members(
     """
     result = await session.execute(
         select(Staff)
-        .where(Staff.deleted_at.is_(None))  # type: ignore[union-attr]
+        .where(Staff.deleted_at.is_(None))
         .order_by(Staff.id)
         .offset(offset)
         .limit(limit)
@@ -41,7 +41,9 @@ async def get_staff_members(
 
 
 @staff_router.get("/staff/{staff_id}", response_model=StaffRead)
-async def get_staff(staff_id: int, session: AsyncSession = Depends(get_async_session)) -> StaffRead:
+async def get_staff(
+    staff_id: int, session: AsyncSession = Depends(get_async_session)
+) -> StaffRead:
     """
     Get a staff from the database
     """
@@ -85,7 +87,9 @@ async def delete_staff(
 
 @staff_router.patch("/staff/{staff_id}", response_model=StaffRead)
 async def update_staff(
-    staff_id: int, staff: StaffUpdate, session: AsyncSession = Depends(get_async_session)
+    staff_id: int,
+    staff: StaffUpdate,
+    session: AsyncSession = Depends(get_async_session),
 ) -> StaffRead:
     """
     Update a staff in the database

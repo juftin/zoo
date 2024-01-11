@@ -22,6 +22,8 @@ class Animals(IDMixin, CreatedUpdatedMixin, DeletedAtMixin, Base):
     name: Mapped[str]
     description: Mapped[str] = mapped_column(default=None, nullable=True)
     species: Mapped[str] = mapped_column(default=None, nullable=True)
-    exhibit_id: Mapped[int] = mapped_column(ForeignKey("exhibits.id"), nullable=True, default=None)
+    exhibit_id: Mapped[int] = mapped_column(
+        ForeignKey("exhibits.id"), nullable=True, default=None
+    )
 
     exhibit: Mapped["Exhibits"] = relationship(back_populates="animals")

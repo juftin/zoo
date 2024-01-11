@@ -8,9 +8,15 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from zoo.config import app_config
 
-async_engine = create_async_engine(app_config.connection_string, echo=app_config.DEBUG, future=True)
+async_engine = create_async_engine(
+    app_config.connection_string, echo=app_config.DEBUG, future=True
+)
 async_session = async_sessionmaker(
-    async_engine, class_=AsyncSession, autocommit=False, expire_on_commit=False, autoflush=False
+    async_engine,
+    class_=AsyncSession,
+    autocommit=False,
+    expire_on_commit=False,
+    autoflush=False,
 )
 
 

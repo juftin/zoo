@@ -68,7 +68,9 @@ def upgrade() -> None:
     op.create_index(op.f("ix_user_email"), "user", ["email"], unique=True)
     op.create_table(
         "access_token",
-        sa.Column("user_id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+        sa.Column(
+            "user_id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False
+        ),
         sa.Column("token", sa.String(length=43), nullable=False),
         sa.Column(
             "created_at",

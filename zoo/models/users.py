@@ -4,7 +4,7 @@ User Database Model
 
 import contextlib
 import uuid
-from typing import AsyncGenerator
+from typing import Any, AsyncGenerator
 
 from fastapi import Depends, FastAPI
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
@@ -15,7 +15,10 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.authentication.strategy import AccessTokenDatabase, DatabaseStrategy
-from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
+from fastapi_users_db_sqlalchemy import (
+    SQLAlchemyBaseUserTableUUID,
+    SQLAlchemyUserDatabase,
+)
 from fastapi_users_db_sqlalchemy.access_token import (
     SQLAlchemyAccessTokenDatabase,
     SQLAlchemyBaseAccessTokenTableUUID,
@@ -53,7 +56,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     """
 
 
-async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+async def get_user_db(
+    session: AsyncSession = Depends(get_async_session),
+) -> AsyncGenerator[SQLAlchemyUserDatabase[User, Any], None]:
     """
     Yield a SQLModelUserDatabaseAsync
     """
@@ -71,7 +76,9 @@ async def get_access_token_db(
     )
 
 
-async def get_user_manager(user_db=Depends(get_user_db)) -> AsyncGenerator[UserManager, None]:
+async def get_user_manager(
+    user_db: SQLAlchemyUserDatabase = Depends(get_user_db),
+) -> AsyncGenerator[UserManager, None]:
     """
     Yield a UserManager
     """
@@ -93,12 +100,15 @@ def get_database_strategy(
     """
     Get a DatabaseStrategy using the AccessTokenDatabase
     """
-    return DatabaseStrategy(database=access_token_db, lifetime_seconds=app_config.JWT_EXPIRATION)
+    return DatabaseStrategy(
+        database=access_token_db, lifetime_seconds=app_config.JWT_EXPIRATION
+    )
 
 
 bearer_transport = BearerTransport(tokenUrl=f"{auth_endpoint}/{jwt_endpoint}/login")
-cookie_transport = CookieTransport(cookie_name=f"{__application__}-auth", cookie_max_age=3600)
-
+cookie_transport = CookieTransport(
+    cookie_name=f"{__application__}-auth", cookie_max_age=3600
+)
 
 auth_backend = AuthenticationBackend(
     name="jwt",
@@ -117,7 +127,6 @@ fastapi_users = FastAPIUsers[User, uuid.UUID](
 )
 
 current_active_user = fastapi_users.current_user(active=True)
-
 
 get_async_session_context = contextlib.asynccontextmanager(get_async_session)
 get_user_db_context = contextlib.asynccontextmanager(get_user_db)
@@ -150,7 +159,9 @@ async def create_user(email: str, password: str, *, is_superuser: bool = False) 
         async with get_user_db_context(session) as user_db:
             async with get_user_manager_context(user_db) as user_manager:
                 user = await user_manager.create(
-                    UserCreate(email=email, password=password, is_superuser=is_superuser)
+                    UserCreate(
+                        email=email, password=password, is_superuser=is_superuser
+                    )
                 )
                 return user
 

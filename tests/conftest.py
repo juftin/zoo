@@ -19,9 +19,10 @@ def migrated_client() -> Generator[TestClient, None, None]:
     """
     Test client for the FastAPI app with a shared temporary database.
 
-    This fixture is session-scoped, so it will only be created once for the entire test session.
-    It creates a temporary directory and database file, and runs the Alembic migrations to set up
-    the database schema. It then imports the FastAPI app and returns a test client for it.
+    This fixture is session-scoped, so it will only be created once for
+    the entire test session. It creates a temporary directory and database
+    file, and runs the Alembic migrations to set up the database schema.
+    It then imports the FastAPI app and returns a test client for it.
     """
     with pytest.MonkeyPatch.context() as monkeypatch, TemporaryDirectory() as temp_dir:
         # Create a temporary database file and update the config

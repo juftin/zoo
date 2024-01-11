@@ -94,7 +94,7 @@ class ZooSettings(BaseSettings):
             logger_inst.handlers = [rich_handler]
 
     @classmethod
-    def custom_generate_unique_id(cls, route: APIRoute):
+    def custom_generate_unique_id(cls, route: APIRoute) -> str:
         """
         Custom function to generate unique id for each route
         """

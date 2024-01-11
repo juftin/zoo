@@ -36,7 +36,9 @@ def test_get_staff_failure(migrated_client: TestClient) -> None:
     """
     response = migrated_client.get("/staff/100")
     assert response.status_code == 404
-    assert response.json() == {"detail": "Error: `Staff` data not found or deleted - ID: 100"}
+    assert response.json() == {
+        "detail": "Error: `Staff` data not found or deleted - ID: 100"
+    }
 
 
 def test_create_staff(migrated_client: TestClient) -> None:

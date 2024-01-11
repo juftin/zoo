@@ -7,6 +7,7 @@ import logging
 from logging.config import fileConfig
 from os import getenv
 
+import sqlalchemy.engine
 from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -22,7 +23,9 @@ if config.config_file_name is not None:
 known_models = __all_models__
 target_metadata = Base.metadata
 
-if not app_config.DOCKER and getenv("PYTEST_CURRENT_TEST", None) is None:  # pragma: no cover
+if (
+    not app_config.DOCKER and getenv("PYTEST_CURRENT_TEST", None) is None
+):  # pragma: no cover
     app_config.rich_logging(loggers=[logging.getLogger()])
 
 
@@ -51,11 +54,13 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def sync_run_migrations(connection):
+def sync_run_migrations(connection: sqlalchemy.engine.Connection) -> None:
     """
     Run migrations in 'sync' mode.
     """
-    context.configure(connection=connection, target_metadata=target_metadata, include_schemas=True)
+    context.configure(
+        connection=connection, target_metadata=target_metadata, include_schemas=True
+    )
 
     with context.begin_transaction():
         context.run_migrations()
@@ -68,8 +73,9 @@ async def run_migrations_online() -> None:
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    # raise ValueError(app_config.connection_string)
-    engine = create_async_engine(app_config.connection_string, echo=app_config.DEBUG, future=True)
+    engine = create_async_engine(
+        app_config.connection_string, echo=app_config.DEBUG, future=True
+    )
     async with engine.connect() as connection:
         await connection.run_sync(sync_run_migrations)
     await engine.dispose()

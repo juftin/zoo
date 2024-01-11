@@ -38,7 +38,9 @@ def test_get_animal_failure(migrated_client: TestClient) -> None:
     """
     response = migrated_client.get("/animals/100")
     assert response.status_code == 404
-    assert response.json() == {"detail": "Error: `Animals` data not found or deleted - ID: 100"}
+    assert response.json() == {
+        "detail": "Error: `Animals` data not found or deleted - ID: 100"
+    }
 
 
 def test_create_animal(migrated_client: TestClient) -> None:

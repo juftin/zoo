@@ -30,7 +30,7 @@ async def get_animals(
     """
     result = await session.execute(
         select(Animals)
-        .where(Animals.deleted_at.is_(None))  # type: ignore[union-attr]
+        .where(Animals.deleted_at.is_(None))
         .order_by(Animals.id)
         .offset(offset)
         .limit(limit)
@@ -87,7 +87,9 @@ async def delete_animal(
 
 @animals_router.patch("/animals/{animal_id}", response_model=AnimalsRead)
 async def update_animal(
-    animal_id: int, animal: AnimalsUpdate, session: AsyncSession = Depends(get_async_session)
+    animal_id: int,
+    animal: AnimalsUpdate,
+    session: AsyncSession = Depends(get_async_session),
 ) -> AnimalsRead:
     """
     Update an animal in the database
