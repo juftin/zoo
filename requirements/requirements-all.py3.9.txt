@@ -4,35 +4,37 @@
 # - pytest
 # - pytest-cov
 # - aiosqlite~=0.19.0
-# - alembic~=1.11.2
-# - asyncpg~=0.28.0
+# - alembic~=1.13.1
+# - asyncpg~=0.29.0
 # - click~=8.1.7
-# - fastapi-users[sqlalchemy]~=12.1.2
-# - fastapi~=0.100.1
+# - fastapi-users[sqlalchemy]~=12.1.3
+# - fastapi~=0.109.2
 # - greenlet~=3.0.3
 # - gunicorn~=21.2.0
-# - httpx~=0.24.1
-# - pydantic-extra-types~=2.0.0
-# - pydantic-settings~=2.0.3
-# - pydantic[email]==2.1.1
-# - rich~=13.5.2
+# - httpx~=0.26.0
+# - pydantic-extra-types~=2.5.0
+# - pydantic-settings~=2.1.0
+# - pydantic[email]==2.6.1
+# - rich~=13.7.0
 # - setuptools; python_version == "3.12"
-# - sqlalchemy[asyncio]~=2.0.20
-# - uvicorn[standard]~=0.23.2
+# - sqlalchemy[asyncio]~=2.0.27
+# - uvicorn[standard]~=0.27.1
 #
 
 aiosqlite==0.19.0
     # via hatch.envs.all.py3.9
-alembic==1.11.3
+alembic==1.13.1
     # via hatch.envs.all.py3.9
 annotated-types==0.6.0
     # via pydantic
 anyio==4.2.0
     # via
-    #   httpcore
+    #   httpx
     #   starlette
     #   watchfiles
-asyncpg==0.28.0
+async-timeout==4.0.3
+    # via asyncpg
+asyncpg==0.29.0
     # via hatch.envs.all.py3.9
 bcrypt==4.1.2
     # via passlib
@@ -47,7 +49,9 @@ click==8.1.7
     #   hatch.envs.all.py3.9
     #   uvicorn
 coverage==7.4.0
-    # via pytest-cov
+    # via
+    #   coverage
+    #   pytest-cov
 cryptography==41.0.7
     # via pyjwt
 dnspython==2.4.2
@@ -60,13 +64,14 @@ exceptiongroup==1.2.0
     # via
     #   anyio
     #   pytest
-fastapi==0.100.1
+fastapi==0.109.2
     # via
     #   hatch.envs.all.py3.9
     #   fastapi-users
-fastapi-users==12.1.2
+fastapi-users==12.1.3
     # via
     #   hatch.envs.all.py3.9
+    #   fastapi-users
     #   fastapi-users-db-sqlalchemy
 fastapi-users-db-sqlalchemy==6.0.1
     # via fastapi-users
@@ -80,11 +85,11 @@ h11==0.14.0
     # via
     #   httpcore
     #   uvicorn
-httpcore==0.17.3
+httpcore==1.0.3
     # via httpx
 httptools==0.6.1
     # via uvicorn
-httpx==0.24.1
+httpx==0.26.0
     # via hatch.envs.all.py3.9
 idna==3.6
     # via
@@ -108,27 +113,32 @@ packaging==23.2
     #   gunicorn
     #   pytest
 passlib==1.7.4
-    # via fastapi-users
+    # via
+    #   fastapi-users
+    #   passlib
 pluggy==1.3.0
     # via pytest
 pycparser==2.21
     # via cffi
-pydantic==2.1.1
+pydantic==2.6.1
     # via
     #   hatch.envs.all.py3.9
     #   fastapi
+    #   pydantic
     #   pydantic-extra-types
     #   pydantic-settings
-pydantic-core==2.4.0
+pydantic-core==2.16.2
     # via pydantic
-pydantic-extra-types==2.0.0
+pydantic-extra-types==2.5.0
     # via hatch.envs.all.py3.9
-pydantic-settings==2.0.3
+pydantic-settings==2.1.0
     # via hatch.envs.all.py3.9
 pygments==2.17.2
     # via rich
 pyjwt==2.8.0
-    # via fastapi-users
+    # via
+    #   fastapi-users
+    #   pyjwt
 pytest==7.4.4
     # via
     #   hatch.envs.all.py3.9
@@ -139,23 +149,23 @@ python-dotenv==1.0.0
     # via
     #   pydantic-settings
     #   uvicorn
-python-multipart==0.0.6
+python-multipart==0.0.7
     # via fastapi-users
 pyyaml==6.0.1
     # via uvicorn
-rich==13.5.3
+rich==13.7.0
     # via hatch.envs.all.py3.9
 sniffio==1.3.0
     # via
     #   anyio
-    #   httpcore
     #   httpx
-sqlalchemy==2.0.25
+sqlalchemy==2.0.27
     # via
     #   hatch.envs.all.py3.9
     #   alembic
     #   fastapi-users-db-sqlalchemy
-starlette==0.27.0
+    #   sqlalchemy
+starlette==0.36.3
     # via fastapi
 tomli==2.0.1
     # via
@@ -171,8 +181,10 @@ typing-extensions==4.9.0
     #   sqlalchemy
     #   starlette
     #   uvicorn
-uvicorn==0.23.2
-    # via hatch.envs.all.py3.9
+uvicorn==0.27.1
+    # via
+    #   hatch.envs.all.py3.9
+    #   uvicorn
 uvloop==0.19.0
     # via uvicorn
 watchfiles==0.21.0
