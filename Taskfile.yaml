@@ -191,6 +191,9 @@ tasks:
     openapi:
         desc: Generate OpenAPI Spec
         internal: true
-        deps: [sync]
+        deps:
+            - task: sync
+              vars:
+                  CLI_ARGS: ""
         cmds:
             - uv run python -m zoo openapi
