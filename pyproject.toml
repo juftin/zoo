@@ -48,7 +48,7 @@ license = "MIT"
 name = "zoo"
 readme = "README.md"
 requires-python = ">=3.9"
-version = "0.2.0"
+version = "0.5.0"
 
 [project.urls]
 Documentation = "https://github.com/juftin/zoo#readme"
