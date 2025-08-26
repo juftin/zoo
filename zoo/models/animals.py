@@ -1,6 +1,7 @@
 """
 Animals Database Model
 """
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey

@@ -20,7 +20,7 @@ class IDMixin:
     ID Mixin
     """
 
-    id: Mapped[int] = mapped_column(primary_key=True)  # noqa: A003
+    id: Mapped[int] = mapped_column(primary_key=True)
 
 
 class CreatedAtMixin:

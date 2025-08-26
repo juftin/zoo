@@ -80,7 +80,7 @@ class OptionalIdMixin(ZooModel):
     This is used for create table models
     """
 
-    id: Optional[int] = Field(  # noqa: A003
+    id: Optional[int] = Field(
         default=None, description="The unique identifier for the table"
     )
 
@@ -90,7 +90,7 @@ class RequiredIdMixin(ZooModel):
     Id mixin with required id
     """
 
-    id: int = Field(description="The unique identifier for the table")  # noqa: A003
+    id: int = Field(description="The unique identifier for the table")
 
 
 class CreatedModifiedMixin(ZooModel):

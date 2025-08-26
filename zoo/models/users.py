@@ -77,7 +77,7 @@ async def get_access_token_db(
 
 
 async def get_user_manager(
-    user_db: SQLAlchemyUserDatabase = Depends(get_user_db),
+    user_db: SQLAlchemyUserDatabase = Depends(get_user_db),  # type: ignore[type-arg]
 ) -> AsyncGenerator[UserManager, None]:
     """
     Yield a UserManager
@@ -85,7 +85,7 @@ async def get_user_manager(
     yield UserManager(user_db=user_db)
 
 
-def get_jwt_strategy() -> JWTStrategy:
+def get_jwt_strategy() -> JWTStrategy:  # type: ignore[type-arg]
     """
     Get a DatabaseStrategy using the AccessTokenDatabase
     """
@@ -95,8 +95,8 @@ def get_jwt_strategy() -> JWTStrategy:
 
 
 def get_database_strategy(
-    access_token_db: AccessTokenDatabase = Depends(get_access_token_db),
-) -> DatabaseStrategy:
+    access_token_db: AccessTokenDatabase = Depends(get_access_token_db),  # type: ignore[type-arg]
+) -> DatabaseStrategy:  # type: ignore[type-arg]
     """
     Get a DatabaseStrategy using the AccessTokenDatabase
     """

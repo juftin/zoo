@@ -10,24 +10,24 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy"
 ]
 dependencies = [
   "fastapi~=0.109.2",
-  "fastapi-users[sqlalchemy]~=12.1.3",
-  "pydantic[email]==2.6.1",
+  "fastapi-users[sqlalchemy]~=14.0.1",
+  "pydantic[email]~=2.11.7",
   "pydantic-settings~=2.1.0",
   "pydantic-extra-types~=2.5.0",
   "sqlalchemy[asyncio]~=2.0.27",
   "aiosqlite~=0.19.0",
-  "asyncpg~=0.29.0",
-  "greenlet~=3.0.3",
+  "asyncpg~=0.30.0",
+  "greenlet~=3.2.4",
   "uvicorn[standard]~=0.27.1",
   "gunicorn~=21.2.0",
   "alembic~=1.13.1",
@@ -38,7 +38,6 @@ dependencies = [
   "setuptools; python_version == '3.12'"
 ]
 description = "An asynchronous zoo API, powered by FastAPI and SQLModel"
-dynamic = ["version"]
 keywords = [
   "fastapi",
   "sqlalchemy",
@@ -48,12 +47,34 @@ keywords = [
 license = "MIT"
 name = "zoo"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
+version = "0.2.0"
 
 [project.urls]
 Documentation = "https://github.com/juftin/zoo#readme"
 Issues = "https://github.com/juftin/zoo/issues"
 Source = "https://github.com/juftin/zoo"
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "mypy>=1.6.1",
+  "ruff~=0.1.14"
+]
+docs = [
+  "markdown-callouts",
+  "markdown-exec",
+  "mkdocs",
+  "mkdocs-autorefs",
+  "mkdocs-gen-files",
+  "mkdocs-literate-nav",
+  "mkdocs-material",
+  "mkdocs-section-index",
+  "mkdocstrings",
+  "mkdocstrings-python",
+  "pymdown-extensions"
+]
 
 [tool.coverage.paths]
 tests = ["tests", "*/zoo/tests"]
@@ -76,107 +97,6 @@ omit = [
 ]
 parallel = true
 source_pkgs = ["zoo", "tests"]
-
-[tool.hatch.env]
-requires = ["hatch-pip-compile", "hatch-mkdocs"]
-
-[tool.hatch.env.collectors.mkdocs.docs]
-path = "mkdocs.yaml"
-
-[tool.hatch.envs.all]
-pip-compile-args = [
-  "--allow-unsafe"
-]
-pip-compile-constraint = ""
-template = "test"
-
-[[tool.hatch.envs.all.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
-
-[tool.hatch.envs.all.scripts]
-migrate = "alembic upgrade head"
-
-[tool.hatch.envs.app]
-detached = false
-
-[tool.hatch.envs.app.scripts]
-container = "docker compose up --build"
-container-reset = ["docker compose down", "container"]
-migrate = "alembic upgrade head"
-reset = ["rm -f zoo/zoo.sqlite", "serve"]
-serve = [
-  "migrate",
-  "uvicorn zoo.app:app --reload --host 0.0.0.0 --port 8000"
-]
-
-[tool.hatch.envs.default]
-pip-compile-constraint = "default"
-post-install-commands = [
-  "- pre-commit install"
-]
-type = "pip-compile"
-
-[tool.hatch.envs.default.scripts]
-cov = "hatch run test:cov"
-test = "hatch run test:test"
-
-[tool.hatch.envs.docs]
-detached = false
-pip-compile-constraint = "default"
-template = "docs"
-type = "pip-compile"
-
-[tool.hatch.envs.gen]
-detached = false
-
-[tool.hatch.envs.gen.scripts]
-all = ["docs"]
-docs = ["openapi"]
-openapi = "python -m zoo openapi"
-release = [
-  "npm install --prefix .github/semantic_release/",
-  "npx --prefix .github/semantic_release/ semantic-release {args:}"
-]
-
-[tool.hatch.envs.lint]
-dependencies = [
-  "mypy>=1.6.1",
-  "ruff~=0.1.7"
-]
-detached = true
-type = "pip-compile"
-
-[tool.hatch.envs.lint.scripts]
-all = [
-  "style",
-  "typing"
-]
-fmt = [
-  "ruff format {args:.}",
-  "ruff --fix {args:.}",
-  "style"
-]
-precommit = [
-  "pre-commit run --all-files"
-]
-style = [
-  "ruff {args:.}",
-  "ruff format --check --diff {args:.}"
-]
-typing = "mypy --install-types --non-interactive {args:zoo tests migrations}"
-
-[tool.hatch.envs.test]
-dependencies = [
-  "pytest",
-  "pytest-cov"
-]
-
-[tool.hatch.envs.test.scripts]
-cov = "pytest --cov --cov-config=pyproject.toml {args:tests}"
-test = "pytest {args:tests}"
-
-[tool.hatch.version]
-path = "zoo/_version.py"
 
 [tool.mypy]
 check_untyped_defs = true

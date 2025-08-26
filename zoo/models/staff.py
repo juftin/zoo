@@ -20,7 +20,7 @@ class Staff(Base, IDMixin, DeletedAtMixin, CreatedUpdatedMixin):
 
     __tablename__ = "staff"
 
-    id: Mapped[int] = mapped_column(primary_key=True)  # noqa: A003
+    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
     job_title: Mapped[str] = mapped_column(default=None, nullable=True)
     email: Mapped[str] = mapped_column(default=None, nullable=True)
