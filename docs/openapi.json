@@ -835,7 +835,7 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/pydantic__main__Body_auth-auth__1"
+                "$ref": "#/components/schemas/fastapi___compat__Body_auth-auth_jwt__login"
               }
             }
           },
@@ -934,7 +934,7 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/pydantic__main__Body_auth-auth__2"
+                "$ref": "#/components/schemas/fastapi___compat__Body_auth-auth_cookie__login"
               }
             }
           },
@@ -1142,7 +1142,7 @@
           "name"
         ],
         "title": "AnimalsCreate",
-        "description": "\n    Animals model: create\n    ",
+        "description": "Animals model: create",
         "examples": [
           {
             "description": "Ferocious kitty",
@@ -1234,7 +1234,7 @@
           "updated_at"
         ],
         "title": "AnimalsRead",
-        "description": "\n    Animals model: read\n    ",
+        "description": "Animals model: read",
         "examples": [
           {
             "created_at": "2021-01-01T00:00:00.000000",
@@ -1300,7 +1300,7 @@
         },
         "type": "object",
         "title": "AnimalsUpdate",
-        "description": "\n    Animals model: update\n    ",
+        "description": "Animals model: update",
         "examples": [
           {
             "description": "Ferocious kitty",
@@ -1386,7 +1386,7 @@
           "name"
         ],
         "title": "ExhibitsCreate",
-        "description": "\n    Exhibits model: create\n    ",
+        "description": "Exhibits model: create",
         "examples": [
           {
             "description": "A big cat exhibit",
@@ -1465,7 +1465,7 @@
           "updated_at"
         ],
         "title": "ExhibitsRead",
-        "description": "\n    Exhibits model: read\n    ",
+        "description": "Exhibits model: read",
         "examples": [
           {
             "created_at": "2021-01-01T00:00:00.000000",
@@ -1518,7 +1518,7 @@
         },
         "type": "object",
         "title": "ExhibitsUpdate",
-        "description": "\n    Exhibits model: update\n    ",
+        "description": "Exhibits model: update",
         "examples": [
           {
             "name": "Big Cat Exhibit"
@@ -1564,7 +1564,7 @@
           "timestamp"
         ],
         "title": "Health",
-        "description": "\n    Health model\n    ",
+        "description": "Health model",
         "examples": [
           {
             "code": 200,
@@ -1647,7 +1647,7 @@
           "name"
         ],
         "title": "StaffCreate",
-        "description": "\n    Staff model: create\n    ",
+        "description": "Staff model: create",
         "examples": [
           {
             "email": "big.cat.lover@gmail.com",
@@ -1766,7 +1766,7 @@
           "updated_at"
         ],
         "title": "StaffRead",
-        "description": "\n    Staff model: read\n    ",
+        "description": "Staff model: read",
         "examples": [
           {
             "created_at": "2021-01-01T00:00:00.000000",
@@ -1859,7 +1859,7 @@
         },
         "type": "object",
         "title": "StaffUpdate",
-        "description": "\n    Staff model: update\n    ",
+        "description": "Staff model: update",
         "examples": [
           {
             "email": "big.cat.lover@gmail.com",
@@ -1922,7 +1922,7 @@
           "password"
         ],
         "title": "UserCreate",
-        "description": "\n    FastAPI Users - User Create Model\n    "
+        "description": "FastAPI Users - User Create Model"
       },
       "UserRead": {
         "properties": {
@@ -1972,7 +1972,7 @@
           "email"
         ],
         "title": "UserRead",
-        "description": "\n    FastAPI Users - User Read Model\n    "
+        "description": "FastAPI Users - User Read Model"
       },
       "ValidationError": {
         "properties": {
@@ -2007,64 +2007,7 @@
         ],
         "title": "ValidationError"
       },
-      "pydantic__main__Body_auth-auth__1": {
-        "properties": {
-          "grant_type": {
-            "anyOf": [
-              {
-                "type": "string",
-                "pattern": "password"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Grant Type"
-          },
-          "username": {
-            "type": "string",
-            "title": "Username"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
-          },
-          "scope": {
-            "type": "string",
-            "title": "Scope",
-            "default": ""
-          },
-          "client_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Client Id"
-          },
-          "client_secret": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Client Secret"
-          }
-        },
-        "type": "object",
-        "required": [
-          "username",
-          "password"
-        ],
-        "title": "Body_auth-auth:jwt.login"
-      },
-      "pydantic__main__Body_auth-auth__2": {
+      "fastapi___compat__Body_auth-auth_cookie__login": {
         "properties": {
           "grant_type": {
             "anyOf": [
@@ -2120,6 +2063,63 @@
           "password"
         ],
         "title": "Body_auth-auth:cookie.login"
+      },
+      "fastapi___compat__Body_auth-auth_jwt__login": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_auth-auth:jwt.login"
       }
     },
     "securitySchemes": {

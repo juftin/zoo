@@ -41,8 +41,12 @@
                 deepLinking: true,
                 showExtensions: true,
                 showCommonExtensions: true,
-                oauth2RedirectUrl: window.location.origin + "/docs/oauth2-redirect",
-                plugins: [SwaggerUIBundle.plugins.DownloadUrl, DisableTryItOutPlugin],
+                oauth2RedirectUrl:
+                    window.location.origin + "/docs/oauth2-redirect",
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl,
+                    DisableTryItOutPlugin,
+                ],
                 presets: [
                     SwaggerUIBundle.presets.apis,
                     SwaggerUIBundle.SwaggerUIStandalonePreset,
